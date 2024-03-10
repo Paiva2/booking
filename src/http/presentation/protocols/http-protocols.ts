@@ -1,7 +1,8 @@
-import { Request } from 'express';
-
 export interface HttpRequest {
-  body: any
+  body: any,
+  authorization?: any
+  params?:any,
+  query?:any
 }
 
 export interface HttpResponse {
