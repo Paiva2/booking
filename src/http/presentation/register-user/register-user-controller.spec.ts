@@ -1,12 +1,20 @@
-import { describe, expect, test } from 'vitest';
+import {
+  describe, expect, test, vi,
+} from 'vitest';
 import { RegisterUserController } from './register-user-controller';
 import { MissingParamException } from '../../exceptions/missing-param-exception';
+import { RegisterUserService } from '../../domain/services/user/register-user-service';
+
+const makeRegisterUserService = () => new RegisterUserService();
 
 const makeSut = () => {
-  const sut = new RegisterUserController();
+  const userRegisterUserService = makeRegisterUserService();
+
+  const sut = new RegisterUserController(userRegisterUserService);
 
   return {
     sut,
+    userRegisterUserService,
   };
 };
 
@@ -99,5 +107,42 @@ describe('Register user controller', () => {
 
     await expect(exception).rejects.toThrow(expectedException);
     expect(expectedException.status).toBe(400);
+  });
+
+  test('Should call service with correct provided params', async () => {
+    const { sut, userRegisterUserService } = makeSut();
+
+    const userRegisterUserServiceSpy = vi.spyOn(userRegisterUserService, 'exec');
+
+    const requestBody = {
+      name: 'valid_name',
+      email: 'valid_email@email.com',
+      password: 'valid_password',
+      contact: 'valid_contact',
+      address: 'valid_address_obj',
+    };
+
+    await sut.handle({ body: requestBody });
+
+    expect(userRegisterUserServiceSpy).toHaveBeenCalledWith(requestBody);
+  });
+
+  test('Should return 200 and data if nothing goes wrong', async () => {
+    const { sut } = makeSut();
+
+    const requestBody = {
+      name: 'valid_name',
+      email: 'valid_email@email.com',
+      password: 'valid_password',
+      contact: 'valid_contact',
+      address: 'valid_address_obj',
+    };
+
+    const response = await sut.handle({ body: requestBody });
+
+    expect(response).toEqual({
+      status: 200,
+      data: 'Register sucessfull!',
+    });
   });
 });
