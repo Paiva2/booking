@@ -1,5 +1,10 @@
-import { Request, Response } from 'express';
+import { Request } from 'express';
 
-export interface HttpRequest extends Request {}
+export interface HttpRequest {
+  body: any
+}
 
-export interface HttpResponse extends Response {}
+export interface HttpResponse {
+  status: number,
+  data: any
+}
