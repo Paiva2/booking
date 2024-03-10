@@ -1,13 +1,18 @@
+import { RegisterUserService } from '../../domain/services/user/register-user-service';
 import { MissingParamException } from '../../exceptions/missing-param-exception';
 import { Controller, HttpRequest } from '../protocols';
 
 export class RegisterUserController implements Controller {
+  public constructor(private readonly registerUserService: RegisterUserService) {}
+
   public async handle(req: HttpRequest) {
     this.dtoCheck(req);
 
     const {
       name, email, password, contact, address,
     } = req.body;
+
+    await this.registerUserService.exec(req.body);
 
     return {
       status: 200,
