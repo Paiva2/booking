@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "ts-node-dev --inspect --transpile-only src/server.ts",
     "build": "npx tsc",
-    "lint": "eslint . --ext js,jsx,ts,tsx --fix"
+    "lint": "eslint . --ext js,jsx,ts,tsx --fix",
+    "test:watch": "vitest",
+    "test": "vitest run"
   },
   "keywords": [],
   "author": "",
