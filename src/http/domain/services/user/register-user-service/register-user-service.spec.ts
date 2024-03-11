@@ -1,8 +1,8 @@
 import {
   describe, test, vi, expect,
 } from 'vitest';
-import { AlreadyExistsException, InvalidParamException } from '../../../../exceptions';
-import { UserEntity, CreateUserEntity } from '../../../../data/entities';
+import { AlreadyExistsException, InvalidParamException } from '../../../../presentation/exceptions';
+import { UserEntity, CreateUserEntity } from '../../../entities';
 import { RegisterUserService } from './register-user-service';
 import { UserRepository } from '../../../../data/repositories';
 import { Encrypter } from '../../../protocols';

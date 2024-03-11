@@ -1,5 +1,5 @@
-import { CreateUserEntity, UserEntity } from '../../../../data/entities';
-import { AlreadyExistsException, InvalidParamException } from '../../../../exceptions';
+import { CreateUserEntity, UserEntity } from '../../../entities';
+import { AlreadyExistsException, InvalidParamException } from '../../../../presentation/exceptions';
 import { contactValidator, emailValidator, postalCodeValidator } from '../../../utils';
 import { UserRepository } from '../../../../data/repositories/user-repository';
 import { Encrypter, Service } from '../../../protocols';

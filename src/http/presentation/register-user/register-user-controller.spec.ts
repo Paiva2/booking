@@ -2,8 +2,8 @@ import {
   describe, expect, test, vi,
 } from 'vitest';
 import { RegisterUserController } from './register-user-controller';
-import { MissingParamException } from '../../exceptions';
-import { CreateUserEntity, UserEntity } from '../../data/entities';
+import { MissingParamException } from '../exceptions';
+import { CreateUserEntity, UserEntity } from '../../domain/entities';
 import { Service } from '../../domain/protocols/service';
 
 const makeRegisterUserServiceStub = () => {

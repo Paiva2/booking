@@ -1,5 +1,5 @@
 import { Service } from '../../domain/protocols/service';
-import { MissingParamException } from '../../exceptions';
+import { MissingParamException } from '../exceptions';
 import { Controller, HttpRequest, HttpResponse } from '../protocols';
 
 export class RegisterUserController implements Controller {
