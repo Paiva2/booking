@@ -1,5 +1,5 @@
-import { RegisterUserService } from '../../domain/services/user/register-user-service';
-import { MissingParamException } from '../../exceptions/missing-param-exception';
+import { RegisterUserService } from '../../domain/services/user/register-user-service/register-user-service';
+import { MissingParamException } from '../../exceptions';
 import { Controller, HttpRequest, HttpResponse } from '../protocols';
 
 export class RegisterUserController implements Controller {

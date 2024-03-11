@@ -2,13 +2,18 @@ import {
   describe, expect, test, vi,
 } from 'vitest';
 import { RegisterUserController } from './register-user-controller';
-import { MissingParamException } from '../../exceptions/missing-param-exception';
-import { RegisterUserService } from '../../domain/services/user/register-user-service';
+import { RegisterUserService } from '../../domain/services/user/register-user-service/register-user-service';
+import { MissingParamException } from '../../exceptions';
 
 const makeRegisterUserService = () => new RegisterUserService();
 
 const makeSut = () => {
   const userRegisterUserService = makeRegisterUserService();
+
+  vi.spyOn(userRegisterUserService, 'exec').mockImplementation(async () => true);
+  vi.spyOn(userRegisterUserService, 'emailCheck').mockImplementation(() => true);
+  vi.spyOn(userRegisterUserService, 'postalCodeCheck').mockImplementation(() => true);
+  vi.spyOn(userRegisterUserService, 'contactCheck').mockImplementation(() => true);
 
   const sut = new RegisterUserController(userRegisterUserService);
 
@@ -25,7 +30,15 @@ describe('Register user controller', () => {
     const requestBody = {
       email: 'valid_email@email.com',
       password: 'valid_password',
-      address: 'valid_address',
+      address: {
+        street: 'valid_street',
+        zipcode: 'valid_zipcode',
+        neighbourhood: 'valid_neighbourhood',
+        number: 'valid_number',
+        complement: 'valid_complement',
+        state: 'valid_state',
+        city: 'valid_city',
+      },
       contact: 'valid_contact',
     };
 
@@ -43,7 +56,15 @@ describe('Register user controller', () => {
     const requestBody = {
       name: 'valid_name',
       password: 'valid_password',
-      address: 'valid_address',
+      address: {
+        street: 'valid_street',
+        zipcode: 'valid_zipcode',
+        neighbourhood: 'valid_neighbourhood',
+        number: 'valid_number',
+        complement: 'valid_complement',
+        state: 'valid_state',
+        city: 'valid_city',
+      },
       contact: 'valid_contact',
     };
 
@@ -61,7 +82,15 @@ describe('Register user controller', () => {
     const requestBody = {
       name: 'valid_name',
       email: 'valid_email@email.com',
-      address: 'valid_address',
+      address: {
+        street: 'valid_street',
+        zipcode: 'valid_zipcode',
+        neighbourhood: 'valid_neighbourhood',
+        number: 'valid_number',
+        complement: 'valid_complement',
+        state: 'valid_state',
+        city: 'valid_city',
+      },
       contact: 'valid_contact',
     };
 
@@ -80,7 +109,15 @@ describe('Register user controller', () => {
       name: 'valid_name',
       email: 'valid_email@email.com',
       password: 'valid_password',
-      address: 'valid_address',
+      address: {
+        street: 'valid_street',
+        zipcode: 'valid_zipcode',
+        neighbourhood: 'valid_neighbourhood',
+        number: 'valid_number',
+        complement: 'valid_complement',
+        state: 'valid_state',
+        city: 'valid_city',
+      },
     };
 
     const exception = sut.handle({ body: requestBody });
@@ -119,7 +156,15 @@ describe('Register user controller', () => {
       email: 'valid_email@email.com',
       password: 'valid_password',
       contact: 'valid_contact',
-      address: 'valid_address_obj',
+      address: {
+        street: 'valid_street',
+        zipcode: 'valid_zipcode',
+        neighbourhood: 'valid_neighbourhood',
+        number: 'valid_number',
+        complement: 'valid_complement',
+        state: 'valid_state',
+        city: 'valid_city',
+      },
     };
 
     await sut.handle({ body: requestBody });
@@ -135,7 +180,15 @@ describe('Register user controller', () => {
       email: 'valid_email@email.com',
       password: 'valid_password',
       contact: 'valid_contact',
-      address: 'valid_address_obj',
+      address: {
+        street: 'valid_street',
+        zipcode: 'valid_zipcode',
+        neighbourhood: 'valid_neighbourhood',
+        number: 'valid_number',
+        complement: 'valid_complement',
+        state: 'valid_state',
+        city: 'valid_city',
+      },
     };
 
     const response = await sut.handle({ body: requestBody });
