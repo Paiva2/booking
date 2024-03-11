@@ -1,29 +1,13 @@
-import { UserRepository } from '../../../../data/repositories/user-repository';
+import { CreateUserEntity, UserEntity } from '../../../../data/entities';
 import { AlreadyExistsException, InvalidParamException } from '../../../../exceptions';
 import { contactValidator, emailValidator, postalCodeValidator } from '../../../utils';
+import { UserRepository } from '../../../../data/repositories/user-repository';
+import { Service } from '../../../protocols/service';
 
-interface RegisterUserServiceRequest {
-  name:string,
-  email: string,
-  password:string,
-  contact:string,
-  adddress: {
-    street:string,
-    zipcode: string,
-    neighbourhood:string,
-    number:string,
-    complement:string,
-    state:string,
-    city:string,
-  }
-}
+export class RegisterUserService implements Service {
+  public constructor(private readonly userRepository: UserRepository) {}
 
-interface RegisterUserServiceResponse {}
-
-export class RegisterUserService {
-  public constructor(private readonly userRepository?: UserRepository) {}
-
-  public async exec(dto: RegisterUserServiceRequest): Promise<RegisterUserServiceResponse> {
+  public async exec(dto: CreateUserEntity): Promise<UserEntity> {
     if (!this.emailCheck(dto.email)) {
       throw new InvalidParamException('email');
     }
@@ -40,11 +24,15 @@ export class RegisterUserService {
       throw new InvalidParamException('password');
     }
 
-    const doesUserAlreadyExists = await this.userRepository?.findByEmail(dto.email);
+    const doesUserAlreadyExists = await this.userRepository.findByEmail(dto.email);
 
     if (doesUserAlreadyExists) {
       throw new AlreadyExistsException('User');
     }
+
+    const newUser = await this.userRepository.save(dto);
+
+    return newUser;
   }
 
   emailCheck(email:string): boolean {
