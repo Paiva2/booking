@@ -3,7 +3,7 @@ export interface CreateUserEntity {
   email: string,
   password:string,
   contact:string,
-  adddress: {
+  address: {
     street:string,
     zipcode: string,
     neighbourhood:string,

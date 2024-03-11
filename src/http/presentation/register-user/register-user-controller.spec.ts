@@ -67,6 +67,7 @@ describe('Register user controller', () => {
         complement: 'valid_complement',
         state: 'valid_state',
         city: 'valid_city',
+        number: 'valid_number',
       },
       contact: 'valid_contact',
     };
