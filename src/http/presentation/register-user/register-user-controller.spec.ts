@@ -2,18 +2,48 @@ import {
   describe, expect, test, vi,
 } from 'vitest';
 import { RegisterUserController } from './register-user-controller';
-import { RegisterUserService } from '../../domain/services/user/register-user-service/register-user-service';
 import { MissingParamException } from '../../exceptions';
+import { CreateUserEntity, UserEntity } from '../../data/entities';
+import { Service } from '../../domain/protocols/service';
 
-const makeRegisterUserService = () => new RegisterUserService();
+const makeRegisterUserServiceStub = () => {
+  class RegisterUserServiceStub implements Service {
+    public async exec(_: CreateUserEntity): Promise<UserEntity> {
+      return {
+        id: 'any_id',
+        name: 'any_name',
+        email: 'any_email@email.com',
+        contact: 'any_contact',
+        password: 'any_password',
+        neighbourhood: 'any_neighbourhood',
+        city: 'any_city',
+        state: 'any_state',
+        number: 'any_number',
+        complement: 'any_complement',
+        zipcode: 'any_zipcode',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+
+    emailCheck(_:string): boolean {
+      return true;
+    }
+
+    postalCodeCheck(_:string): boolean {
+      return true;
+    }
+
+    contactCheck(_:string): boolean {
+      return true;
+    }
+  }
+
+  return new RegisterUserServiceStub();
+};
 
 const makeSut = () => {
-  const userRegisterUserService = makeRegisterUserService();
-
-  vi.spyOn(userRegisterUserService, 'exec').mockImplementation(async () => true);
-  vi.spyOn(userRegisterUserService, 'emailCheck').mockImplementation(() => true);
-  vi.spyOn(userRegisterUserService, 'postalCodeCheck').mockImplementation(() => true);
-  vi.spyOn(userRegisterUserService, 'contactCheck').mockImplementation(() => true);
+  const userRegisterUserService = makeRegisterUserServiceStub();
 
   const sut = new RegisterUserController(userRegisterUserService);
 
@@ -34,7 +64,6 @@ describe('Register user controller', () => {
         street: 'valid_street',
         zipcode: 'valid_zipcode',
         neighbourhood: 'valid_neighbourhood',
-        number: 'valid_number',
         complement: 'valid_complement',
         state: 'valid_state',
         city: 'valid_city',

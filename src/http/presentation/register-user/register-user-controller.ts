@@ -1,9 +1,9 @@
-import { RegisterUserService } from '../../domain/services/user/register-user-service/register-user-service';
+import { Service } from '../../domain/protocols/service';
 import { MissingParamException } from '../../exceptions';
 import { Controller, HttpRequest, HttpResponse } from '../protocols';
 
 export class RegisterUserController implements Controller {
-  public constructor(private readonly registerUserService: RegisterUserService) {}
+  public constructor(private readonly registerUserService: Service) {}
 
   public async handle(req: HttpRequest):Promise<HttpResponse> {
     this.dtoCheck(req);
