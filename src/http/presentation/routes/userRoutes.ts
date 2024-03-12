@@ -7,8 +7,8 @@ export function userRoutes(app: Express) {
   app.post('/api/v1/user/register', async (req: Request, res: Response) => {
     const { registerUserController } = await userFactory.handle();
 
-    const { status, data } = await registerUserController.handle(req);
+    const controllerResponse = await registerUserController.handle(req);
 
-    return res.status(status).send(data);
+    return res.status(controllerResponse.status).send(controllerResponse.data);
   });
 }

@@ -19,6 +19,7 @@ module.exports = {
     'import/prefer-default-export': 'off',
     'no-promise-executor-return': 'off',
     '@typescript-eslint/no-unused-vars': 'off',
-    'import/no-extraneous-dependencies': 'off'
+    'import/no-extraneous-dependencies': 'off',
+    'no-console': 'off'
   },
 };
