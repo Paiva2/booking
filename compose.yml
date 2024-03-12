@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  db:
+    image: postgres
+    ports:
+      - 5432:5432
+    container_name: booking-pg
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${PG_USER}
+      - POSTGRES_PASSWORD=${PG_PASS}
+      - POSTGRES_DB=${PG_DB}
+      - TZ=Europe/London
