@@ -1,7 +1,7 @@
 import { UserModel } from '../../data/db';
 import { RegisterUserService } from '../../domain/services/user';
 import { EncrypterAdapter } from '../../domain/utils';
-import { RegisterUserController } from '../register-user/register-user-controller';
+import { RegisterUserController } from '../controllers/register-user/register-user-controller';
 
 export class UserFactory {
   public async handle() {
