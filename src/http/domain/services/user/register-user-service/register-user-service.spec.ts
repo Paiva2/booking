@@ -2,10 +2,9 @@ import {
   describe, test, vi, expect,
 } from 'vitest';
 import { AlreadyExistsException, InvalidParamException } from '../../../../presentation/exceptions';
-import { UserEntity, CreateUserEntity } from '../../../entities';
 import { RegisterUserService } from './register-user-service';
-import { UserRepository } from '../../../../data/repositories';
 import { Encrypter } from '../../../protocols';
+import { InMemoryUserModel } from '../../../../data/in-memory/in-memory-user-model';
 
 const makeEncrypterStub = () => {
   class EncrypterStub implements Encrypter {
@@ -21,36 +20,10 @@ const makeEncrypterStub = () => {
   return new EncrypterStub();
 };
 
-const makeUserRepositoryStub = () => {
-  class UserRepositoryStub implements UserRepository {
-    async findByEmail(_: string): Promise<UserEntity | null> {
-      return null;
-    }
-
-    async save(_: CreateUserEntity): Promise<UserEntity> {
-      return {
-        id: 'any_id',
-        name: 'valid_name',
-        email: 'valid_email@email.com',
-        contact: 'valid_contact',
-        password: 'hashed_password',
-        neighbourhood: 'valid_neighbourhood',
-        city: 'valid_city',
-        state: 'valid_state',
-        number: 'valid_number',
-        complement: 'valid_complement',
-        zipcode: 'valid_zipcode',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-    }
-  }
-
-  return new UserRepositoryStub();
-};
+const makeUserRepository = () => new InMemoryUserModel();
 
 const makeSut = () => {
-  const userRepositoryStub = makeUserRepositoryStub();
+  const userRepositoryStub = makeUserRepository();
   const encrypterStub = makeEncrypterStub();
 
   const sut = new RegisterUserService(userRepositoryStub, encrypterStub);
@@ -290,7 +263,7 @@ describe('Register user Service', () => {
     const response = await sut.exec(requestBody);
 
     expect(response).toEqual({
-      id: 'any_id',
+      id: expect.any(String),
       name: 'valid_name',
       email: 'valid_email@email.com',
       contact: 'valid_contact',
@@ -301,8 +274,8 @@ describe('Register user Service', () => {
       number: 'valid_number',
       complement: 'valid_complement',
       zipcode: 'valid_zipcode',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: expect.any(Date),
+      updatedAt: expect.any(Date),
     });
   });
 });
