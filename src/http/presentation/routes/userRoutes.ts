@@ -1,7 +1,7 @@
 import { Express, Request, Response } from 'express';
 import { registerUserDTO } from '../dto-schemas';
 import { UserFactory } from '../factories/user-factory';
-import { zodDto } from '../middlewares/zod-dto';
+import { zodDto } from '../middlewares';
 
 export function userRoutes(app: Express) {
   const userFactory = new UserFactory();
@@ -14,7 +14,7 @@ export function userRoutes(app: Express) {
 
       const controllerResponse = await registerUserController.handle(req);
 
-      return res.status(controllerResponse.status).send(controllerResponse.data);
+      return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
 }

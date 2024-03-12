@@ -21,4 +21,6 @@ model User {
   zipcode       String   @db.VarChar(30)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @default(now()) @updatedAt
+
+  @@map("tb_users")
 }
