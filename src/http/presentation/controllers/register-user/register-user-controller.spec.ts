@@ -2,9 +2,9 @@ import {
   describe, expect, test, vi,
 } from 'vitest';
 import { RegisterUserController } from './register-user-controller';
-import { MissingParamException } from '../exceptions';
-import { CreateUserEntity, UserEntity } from '../../domain/entities';
-import { Service } from '../../domain/protocols/service';
+import { Service } from '../../../domain/protocols';
+import { CreateUserEntity, UserEntity } from '../../../domain/entities';
+import { MissingParamException } from '../../exceptions';
 
 const makeRegisterUserServiceStub = () => {
   class RegisterUserServiceStub implements Service {
@@ -224,7 +224,7 @@ describe('Register user controller', () => {
     const response = await sut.handle({ body: requestBody });
 
     expect(response).toEqual({
-      status: 200,
+      status: 201,
       data: 'Register sucessfull!',
     });
   });

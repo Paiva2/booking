@@ -1,6 +1,6 @@
-import { Service } from '../../domain/protocols/service';
-import { MissingParamException } from '../exceptions';
-import { Controller, HttpRequest, HttpResponse } from '../protocols';
+import { Service } from '../../../domain/protocols';
+import { MissingParamException } from '../../exceptions';
+import { Controller, HttpRequest, HttpResponse } from '../../protocols';
 
 export class RegisterUserController implements Controller {
   public constructor(private readonly registerUserService: Service) {}
@@ -11,7 +11,7 @@ export class RegisterUserController implements Controller {
     await this.registerUserService.exec(req.body);
 
     return {
-      status: 200,
+      status: 201,
       data: 'Register sucessfull!',
     };
   }
