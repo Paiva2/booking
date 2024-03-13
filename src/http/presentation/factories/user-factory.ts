@@ -1,9 +1,10 @@
 import { UserModel } from '../../data/db';
-import { AuthUserService, RegisterUserService } from '../../domain/services/user';
+import { AuthUserService, RegisterUserService, UpdateUserService } from '../../domain/services/user';
 import { EncrypterAdapter } from '../../domain/utils';
 import { AuthUserController } from '../controllers/auth-user/auth-user-controller';
 import { GetUserProfileController } from '../controllers/get-user-profile/get-user-profile-controller';
 import { RegisterUserController } from '../controllers/register-user/register-user-controller';
+import { UpdateUserProfileController } from '../controllers/update-user-profile/update-user-profile-controller';
 import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 
 export class UserFactory {
@@ -16,10 +17,16 @@ export class UserFactory {
     const authUserController = new AuthUserController(services.authUserService, jwtAdapter);
     const getUserProfileController = new GetUserProfileController(models.userModel, jwtAdapter);
 
+    const updateUserProfileController = new UpdateUserProfileController(
+      services.updateUserService,
+      jwtAdapter,
+    );
+
     return {
       registerUserController,
       authUserController,
       getUserProfileController,
+      updateUserProfileController,
     };
   }
 
@@ -33,10 +40,12 @@ export class UserFactory {
     );
 
     const authUserService = new AuthUserService(models.userModel, protocols.encrypterAdapter);
+    const updateUserService = new UpdateUserService(models.userModel, protocols.encrypterAdapter);
 
     return {
       newRegisterUserService,
       authUserService,
+      updateUserService,
     };
   }
 

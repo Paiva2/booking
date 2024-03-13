@@ -1,5 +1,5 @@
 import { Request, Response, Express } from 'express';
-import { authUserDTO, registerUserDTO } from '../dto-schemas';
+import { authUserDTO, registerUserDTO, updateUserDTO } from '../dto-schemas';
 import { UserFactory } from '../factories/user-factory';
 import { zodDto } from '../middlewares';
 import tokenVerify from '../middlewares/token-verify';
@@ -42,6 +42,21 @@ export default function userRoutes(app: Express) {
       const controllerResponse = await getUserProfileController.handle(req.headers);
 
       return res.status(controllerResponse.status).send({ reply: controllerResponse });
+    },
+  );
+
+  app.patch(
+    `${prefix}/a`,
+    [tokenVerify, zodDto(updateUserDTO)],
+    async (req: Request, res: Response) => {
+      const { updateUserProfileController } = await userFactory.handle();
+
+      const controllerResponse = await updateUserProfileController.handle({
+        authorization: req.headers.authorization,
+        body: req.body,
+      });
+
+      return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
 }

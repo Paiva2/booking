@@ -1,5 +1,5 @@
 export interface UpdateUserEntity {
-  userId: string
+  userId?: string
   name?: string
   email?: string
   contact?: string

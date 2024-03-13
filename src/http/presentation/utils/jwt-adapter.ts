@@ -34,7 +34,7 @@ export class JwtHandlerAdapter implements JwtHandler {
         issuer: this.ISSUER,
       }) as JwtPayload;
 
-      decodedToken = jwtPayload.sub!;
+      decodedToken = jwtPayload.data!;
     } catch (e) {
       console.error(e);
       throw new GlobalException('Error while decoding the token', 422);

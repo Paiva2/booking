@@ -44,11 +44,15 @@ export class UserModel implements UserRepository {
   }
 
   async update(userUpdate: UpdateUserEntity): Promise<UserEntity> {
+    const idKey = 'userId';
+
+    const { [idKey]: userId, ...userUpdateFields } = userUpdate;
+
     const updateUser = await prisma.user.update({
       where: {
-        id: userUpdate.userId,
+        id: userId,
       },
-      data: { ...userUpdate },
+      data: { ...userUpdateFields },
     });
 
     return updateUser;
