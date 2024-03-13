@@ -48,3 +48,14 @@ export const registerUserDTO = z.object({
     }),
   }),
 });
+
+export const authUserDTO = z.object({
+  email: z.string({
+    required_error: "email can't be empty.",
+    invalid_type_error: 'email must be an string.',
+  }).email({ message: 'email param must be an valid e-mail.' }),
+  password: z.string({
+    required_error: "password can't be empty.",
+    invalid_type_error: 'password must be an string.',
+  }).min(6, { message: 'password must have at least 6 characters.' }),
+});

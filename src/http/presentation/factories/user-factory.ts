@@ -1,6 +1,7 @@
 import { UserModel } from '../../data/db';
-import { RegisterUserService } from '../../domain/services/user';
+import { AuthUserService, RegisterUserService } from '../../domain/services/user';
 import { EncrypterAdapter } from '../../domain/utils';
+import { AuthUserController } from '../controllers/auth-user/auth-user-controller';
 import { RegisterUserController } from '../controllers/register-user/register-user-controller';
 
 export class UserFactory {
@@ -8,6 +9,7 @@ export class UserFactory {
     const services = await this.services();
 
     const registerUserController = new RegisterUserController(services.newRegisterUserService);
+    const authUserController = new AuthUserController(services.authUserService);
 
     return {
       registerUserController,
@@ -23,8 +25,11 @@ export class UserFactory {
       protocols.encrypterAdapter,
     );
 
+    const authUserService = new AuthUserService(models.userModel, protocols.encrypterAdapter);
+
     return {
       newRegisterUserService,
+      authUserService,
     };
   }
 
