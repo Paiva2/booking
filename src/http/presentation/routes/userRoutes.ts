@@ -1,11 +1,11 @@
-import { Express, Request, Response } from 'express';
+import { Request, Response, Express } from 'express';
 import { authUserDTO, registerUserDTO } from '../dto-schemas';
 import { UserFactory } from '../factories/user-factory';
 import { zodDto } from '../middlewares';
 
-export function userRoutes(app: Express) {
-  const userFactory = new UserFactory();
+const userFactory = new UserFactory();
 
+export default function userRoutes(app: Express) {
   app.post(
     '/api/v1/user/register',
     [zodDto(registerUserDTO)],
@@ -22,9 +22,9 @@ export function userRoutes(app: Express) {
     '/api/v1/user/login',
     [zodDto(authUserDTO)],
     async (req: Request, res: Response) => {
-      const { registerUserController } = await userFactory.handle();
+      const { authUserController } = await userFactory.handle();
 
-      const controllerResponse = await registerUserController.handle(req);
+      const controllerResponse = await authUserController.handle(req);
 
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },

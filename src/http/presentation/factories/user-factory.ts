@@ -3,16 +3,19 @@ import { AuthUserService, RegisterUserService } from '../../domain/services/user
 import { EncrypterAdapter } from '../../domain/utils';
 import { AuthUserController } from '../controllers/auth-user/auth-user-controller';
 import { RegisterUserController } from '../controllers/register-user/register-user-controller';
+import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 
 export class UserFactory {
   public async handle() {
     const services = await this.services();
+    const jwtAdapter = new JwtHandlerAdapter();
 
     const registerUserController = new RegisterUserController(services.newRegisterUserService);
-    const authUserController = new AuthUserController(services.authUserService);
+    const authUserController = new AuthUserController(services.authUserService, jwtAdapter);
 
     return {
       registerUserController,
+      authUserController,
     };
   }
 

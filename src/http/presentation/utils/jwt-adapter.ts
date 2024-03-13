@@ -14,9 +14,9 @@ export class JwtHandlerAdapter implements JwtHandler {
     let token = '';
 
     try {
-      token = jwt.sign(subject, this.SECRET!, {
-        issuer: this.ISSUER,
+      token = jwt.sign({ data: subject }, this.SECRET!, {
         expiresIn: this.EXP_TIME,
+        issuer: this.ISSUER,
       });
     } catch (e) {
       console.error(e);
