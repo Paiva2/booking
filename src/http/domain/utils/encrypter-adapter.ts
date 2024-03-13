@@ -2,8 +2,10 @@ import bcryptjs from 'bcryptjs';
 import { Encrypter } from '../protocols';
 
 export class EncrypterAdapter implements Encrypter {
+  private saltRounds = 6;
+
   public async hash(string: string): Promise<string> {
-    const hashPassword = await bcryptjs.hash(string, 6);
+    const hashPassword = await bcryptjs.hash(string, this.saltRounds);
 
     return hashPassword;
   }

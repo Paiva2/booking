@@ -7,7 +7,7 @@ import {
 } from 'vitest';
 import { AuthUserService } from '..';
 import { Encrypter } from '../../../protocols';
-import { CreateUserEntity, UserEntity } from '../../../entities';
+import { CreateUserEntity, UpdateUserEntity, UserEntity } from '../../../entities';
 import {
   InvalidParamException,
   NotFoundException,
@@ -30,41 +30,38 @@ const makeEncrypterStub = () => {
 };
 
 const makeUserRepositoryStub = () => {
+  const mockUser = {
+    id: 'valid_id',
+    name: 'valid_name',
+    email: 'valid_email@email.com',
+    contact: 'valid_contact',
+    password: 'valid_hashed_password',
+    neighbourhood: 'valid_neighbourhood',
+    street: 'valid_street',
+    city: 'valid_city',
+    state: 'valid_state',
+    number: 'valid_number',
+    complement: 'valid_complement',
+    zipcode: 'valid_zipcode',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
   class UserRepositoryStub implements UserRepository {
     async findByEmail(email: string): Promise<UserEntity | null> {
-      return {
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email@email.com',
-        contact: 'valid_contact',
-        password: 'valid_hashed_password',
-        neighbourhood: 'valid_neighbourhood',
-        city: 'valid_city',
-        state: 'valid_state',
-        number: 'valid_number',
-        complement: 'valid_complement',
-        zipcode: 'valid_zipcode',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      return mockUser;
     }
 
     async save(user: CreateUserEntity): Promise<UserEntity> {
-      return {
-        id: 'valid_id',
-        name: 'valid_name',
-        email: 'valid_email@email.com',
-        contact: 'valid_contact',
-        password: 'valid_hashed_password',
-        neighbourhood: 'valid_neighbourhood',
-        city: 'valid_city',
-        state: 'valid_state',
-        number: 'valid_number',
-        complement: 'valid_complement',
-        zipcode: 'valid_zipcode',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
+      return mockUser;
+    }
+
+    async findById(id: string): Promise<UserEntity | null> {
+      return null;
+    }
+
+    async update(userUpdate: UpdateUserEntity): Promise<UserEntity> {
+      return {} as UserEntity;
     }
   }
 
@@ -224,6 +221,7 @@ describe('Auth user service', () => {
       state: 'valid_state',
       number: 'valid_number',
       complement: 'valid_complement',
+      street: 'valid_street',
       zipcode: 'valid_zipcode',
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
