@@ -1,4 +1,4 @@
-import { UserEntity, CreateUserEntity } from '../../domain/entities';
+import { UserEntity, CreateUserEntity, UpdateUserEntity } from '../../domain/entities';
 import { UserRepository } from '../repositories';
 import prisma from '../lib/prisma';
 
@@ -41,5 +41,16 @@ export class UserModel implements UserRepository {
     });
 
     return find;
+  }
+
+  async update(userUpdate: UpdateUserEntity): Promise<UserEntity> {
+    const updateUser = await prisma.user.update({
+      where: {
+        id: userUpdate.userId,
+      },
+      data: { ...userUpdate },
+    });
+
+    return updateUser;
   }
 }
