@@ -4,12 +4,12 @@ import {
   HttpResponse,
   JwtHandler,
 } from '../../protocols';
-import { AuthUserService } from '../../../domain/services/user';
 import { MissingParamException } from '../../exceptions';
+import { Service } from '../../../domain/protocols';
 
 export class AuthUserController implements Controller {
   public constructor(
-    private readonly authUserService: AuthUserService,
+    private readonly authUserService: Service,
     private readonly jwtHandler: JwtHandler,
   ) {}
 

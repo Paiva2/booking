@@ -4,8 +4,9 @@ import {
 import { Service } from '../../../domain/protocols';
 import { JwtHandler } from '../../protocols';
 import { AuthUserController } from './auth-user-controller';
-import { AuthUserEntity, UserEntity } from '../../../domain/entities';
+import { AuthUserEntity, CreateUserEntity, UserEntity } from '../../../domain/entities';
 import { MissingParamException } from '../../exceptions';
+import { AuthUserService } from '../../../domain/services/user';
 
 const makeJwtHandlerStub = () => {
   class JwtHandlerStub implements JwtHandler {
@@ -22,7 +23,7 @@ const makeJwtHandlerStub = () => {
 };
 
 const makeAuthUserServiceStub = () => {
-  class AuthUserService implements Service {
+  class AuthUserServiceStub implements Service {
     public async exec(dto: AuthUserEntity): Promise<UserEntity> {
       return {
         id: 'any_id',
@@ -40,9 +41,13 @@ const makeAuthUserServiceStub = () => {
         updatedAt: new Date(),
       };
     }
+
+    emailCheck(email: string): boolean {
+      return true;
+    }
   }
 
-  return new AuthUserService();
+  return new AuthUserServiceStub();
 };
 
 const makeSut = () => {
