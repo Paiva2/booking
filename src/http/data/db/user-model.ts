@@ -19,6 +19,7 @@ export class UserModel implements UserRepository {
         name: user.name,
         email: user.email,
         password: user.password,
+        street: user.address.street,
         city: user.address.city,
         complement: user.address.complement,
         contact: user.contact,
@@ -30,5 +31,15 @@ export class UserModel implements UserRepository {
     });
 
     return createUser;
+  }
+
+  public async findById(id: string): Promise<UserEntity | null> {
+    const find = await prisma.user.findFirst({
+      where: {
+        id,
+      },
+    });
+
+    return find;
   }
 }
