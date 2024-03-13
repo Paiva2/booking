@@ -4,9 +4,8 @@ import {
 import { Service } from '../../../domain/protocols';
 import { JwtHandler } from '../../protocols';
 import { AuthUserController } from './auth-user-controller';
-import { AuthUserEntity, CreateUserEntity, UserEntity } from '../../../domain/entities';
+import { AuthUserEntity, UserEntity } from '../../../domain/entities';
 import { MissingParamException } from '../../exceptions';
-import { AuthUserService } from '../../../domain/services/user';
 
 const makeJwtHandlerStub = () => {
   class JwtHandlerStub implements JwtHandler {
