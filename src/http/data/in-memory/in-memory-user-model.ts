@@ -15,6 +15,7 @@ export class InMemoryUserModel implements UserRepository {
       email: user.email,
       name: user.name,
       password: user.password,
+      street: user.address.street,
       city: user.address.city,
       complement: user.address.complement,
       zipcode: user.address.zipcode,
@@ -29,5 +30,9 @@ export class InMemoryUserModel implements UserRepository {
     this.users.push(newUser);
 
     return newUser;
+  }
+
+  findById(email: string): Promise<UserEntity | null> {
+    throw new Error('Method not implemented.');
   }
 }

@@ -31,6 +31,7 @@ const makeAuthUserServiceStub = () => {
         email: 'any_email@email.com',
         contact: 'any_contact',
         password: 'any_password',
+        street: 'any_street',
         neighbourhood: 'any_neighbourhood',
         city: 'any_city',
         state: 'any_state',

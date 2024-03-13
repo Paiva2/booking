@@ -4,6 +4,7 @@ export interface UserEntity {
   email: string
   contact: string
   password: string
+  street: string
   neighbourhood: string
   city: string
   state: string

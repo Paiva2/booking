@@ -16,6 +16,7 @@ const makeRegisterUserServiceStub = () => {
         contact: 'any_contact',
         password: 'any_password',
         neighbourhood: 'any_neighbourhood',
+        street: 'any_street',
         city: 'any_city',
         state: 'any_state',
         number: 'any_number',
