@@ -100,8 +100,8 @@ describe('Forgot user password controller', () => {
     const response = await sut.handle({ body: requestBody });
 
     expect(response).toEqual({
-      status: 200,
-      data: 'A new password was sent to your e-mail.',
+      status: 204,
+      data: null,
     });
   });
 });

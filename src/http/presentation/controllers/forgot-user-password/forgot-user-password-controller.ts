@@ -1,9 +1,9 @@
-import { ForgotUserPasswordService } from '../../../domain/services/user';
+import { Service } from '../../../domain/protocols';
 import { MissingParamException } from '../../exceptions';
 import { Controller, HttpRequest, HttpResponse } from '../../protocols';
 
 export class ForgotUserPasswordController implements Controller {
-  public constructor(private readonly forgotUserPasswordService: ForgotUserPasswordService) {}
+  public constructor(private readonly forgotUserPasswordService: Service) {}
 
   public async handle(req: HttpRequest): Promise<HttpResponse> {
     this.dtoCheck(req.body);
@@ -13,8 +13,8 @@ export class ForgotUserPasswordController implements Controller {
     await this.forgotUserPasswordService.exec(email);
 
     return {
-      status: 200,
-      data: 'A new password was sent to your e-mail.',
+      status: 204,
+      data: null,
     };
   }
 
