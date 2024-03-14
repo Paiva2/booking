@@ -116,3 +116,10 @@ export const updateUserDTO = z.object({
     invalid_type_error: 'city must be an string.',
   }).optional(),
 });
+
+export const forgotUserPasswordDTO = z.object({
+  email: z.string({
+    required_error: "email can't be empty.",
+    invalid_type_error: 'email must be an string.',
+  }).email({ message: 'email param must be an valid e-mail.' }),
+});

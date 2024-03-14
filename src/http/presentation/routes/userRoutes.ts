@@ -1,5 +1,7 @@
 import { Request, Response, Express } from 'express';
-import { authUserDTO, registerUserDTO, updateUserDTO } from '../dto-schemas';
+import {
+  authUserDTO, forgotUserPasswordDTO, registerUserDTO, updateUserDTO,
+} from '../dto-schemas';
 import { UserFactory } from '../factories/user-factory';
 import { zodDto } from '../middlewares';
 import tokenVerify from '../middlewares/token-verify';
@@ -46,7 +48,7 @@ export default function userRoutes(app: Express) {
   );
 
   app.patch(
-    `${prefix}/a`,
+    `${prefix}/profile`,
     [tokenVerify, zodDto(updateUserDTO)],
     async (req: Request, res: Response) => {
       const { updateUserProfileController } = await userFactory.handle();
@@ -57,6 +59,18 @@ export default function userRoutes(app: Express) {
       });
 
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
+    },
+  );
+
+  app.post(
+    `${prefix}/forgot-password`,
+    [zodDto(forgotUserPasswordDTO)],
+    async (req: Request, res: Response) => {
+      const { forgotUserPasswordController } = await userFactory.handle();
+
+      const controllerResponse = await forgotUserPasswordController.handle(req);
+
+      return res.status(controllerResponse.status).send();
     },
   );
 }

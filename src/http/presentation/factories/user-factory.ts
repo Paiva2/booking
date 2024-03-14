@@ -1,7 +1,10 @@
 import { UserModel } from '../../data/db';
-import { AuthUserService, RegisterUserService, UpdateUserService } from '../../domain/services/user';
-import { EncrypterAdapter } from '../../domain/utils';
+import {
+  AuthUserService, ForgotUserPasswordService, RegisterUserService, UpdateUserService,
+} from '../../domain/services/user';
+import { EmailSenderAdapter, EncrypterAdapter } from '../../domain/utils';
 import { AuthUserController } from '../controllers/auth-user/auth-user-controller';
+import { ForgotUserPasswordController } from '../controllers/forgot-user-password/forgot-user-password-controller';
 import { GetUserProfileController } from '../controllers/get-user-profile/get-user-profile-controller';
 import { RegisterUserController } from '../controllers/register-user/register-user-controller';
 import { UpdateUserProfileController } from '../controllers/update-user-profile/update-user-profile-controller';
@@ -9,17 +12,29 @@ import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 
 export class UserFactory {
   public async handle() {
-    const services = await this.services();
-    const jwtAdapter = new JwtHandlerAdapter();
-    const models = this.models();
+    const {
+      newRegisterUserService,
+      authUserService,
+      updateUserService,
+      forgotUserPasswordService,
 
-    const registerUserController = new RegisterUserController(services.newRegisterUserService);
-    const authUserController = new AuthUserController(services.authUserService, jwtAdapter);
-    const getUserProfileController = new GetUserProfileController(models.userModel, jwtAdapter);
+    } = await this.services();
+    const jwtAdapter = new JwtHandlerAdapter();
+    const { userModel } = this.models();
+
+    const registerUserController = new RegisterUserController(newRegisterUserService);
+
+    const authUserController = new AuthUserController(authUserService, jwtAdapter);
+
+    const getUserProfileController = new GetUserProfileController(userModel, jwtAdapter);
 
     const updateUserProfileController = new UpdateUserProfileController(
-      services.updateUserService,
+      updateUserService,
       jwtAdapter,
+    );
+
+    const forgotUserPasswordController = new ForgotUserPasswordController(
+      forgotUserPasswordService,
     );
 
     return {
@@ -27,25 +42,37 @@ export class UserFactory {
       authUserController,
       getUserProfileController,
       updateUserProfileController,
+      forgotUserPasswordController,
     };
   }
 
   private async services() {
     const models = this.models();
-    const protocols = this.domainProtocols();
+    const domainProtocols = this.domainProtocols();
 
     const newRegisterUserService = new RegisterUserService(
       models.userModel,
-      protocols.encrypterAdapter,
+      domainProtocols.encrypterAdapter,
     );
 
-    const authUserService = new AuthUserService(models.userModel, protocols.encrypterAdapter);
-    const updateUserService = new UpdateUserService(models.userModel, protocols.encrypterAdapter);
+    const authUserService = new AuthUserService(models.userModel, domainProtocols.encrypterAdapter);
+
+    const updateUserService = new UpdateUserService(
+      models.userModel,
+      domainProtocols.encrypterAdapter,
+    );
+
+    const forgotUserPasswordService = new ForgotUserPasswordService(
+      domainProtocols.mailSenderAdapter,
+      models.userModel,
+      domainProtocols.encrypterAdapter,
+    );
 
     return {
       newRegisterUserService,
       authUserService,
       updateUserService,
+      forgotUserPasswordService,
     };
   }
 
@@ -59,9 +86,11 @@ export class UserFactory {
 
   private domainProtocols() {
     const encrypterAdapter = new EncrypterAdapter();
+    const mailSenderAdapter = new EmailSenderAdapter();
 
     return {
       encrypterAdapter,
+      mailSenderAdapter,
     };
   }
 }
