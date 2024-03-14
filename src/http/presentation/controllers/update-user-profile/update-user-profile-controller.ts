@@ -4,12 +4,12 @@ import {
   HttpResponse,
   JwtHandler,
 } from '../../protocols';
-import { UpdateUserService } from '../../../domain/services/user';
 import { MissingParamException } from '../../exceptions';
+import { Service } from '../../../domain/protocols';
 
 export class UpdateUserProfileController implements Controller {
   public constructor(
-    private readonly updateUserService: UpdateUserService,
+    private readonly updateUserService: Service,
     private readonly jwtHandler: JwtHandler,
   ) {}
 

@@ -6,7 +6,7 @@ import {
   vi,
 } from 'vitest';
 import { GetUserProfileController } from './get-user-profile-controller';
-import { UserEntity, CreateUserEntity } from '../../../domain/entities';
+import { UserEntity, CreateUserEntity, UpdateUserEntity } from '../../../domain/entities';
 import { MissingParamException, NotFoundException } from '../../exceptions';
 import { UserRepository } from '../../../data/repositories';
 import { JwtHandler } from '../../protocols';
@@ -44,6 +44,10 @@ const makeUserRepositoryStub = () => {
   };
 
   class UserRepositoryStub implements UserRepository {
+    async update(userUpdate: UpdateUserEntity): Promise<UserEntity> {
+      throw new Error('Method not implemented.');
+    }
+
     async findByEmail(email: string): Promise<UserEntity | null> {
       return mockUser;
     }
