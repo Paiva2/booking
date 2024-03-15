@@ -32,7 +32,7 @@ export class ForgotUserPasswordService implements Service {
       password: hashNewPassword,
     });
 
-    const sendNewPasswordToEmail = this.mailSender.send({
+    const sendNewPasswordToEmail = await this.mailSender.send({
       to: email,
       subject: '[Booking APP] - Password reset',
       text:

@@ -74,7 +74,7 @@ const makeUserRepositoryStub = () => {
 
 const makeMailSenderStub = () => {
   class MailSenderStub implements EmailSender {
-    send(mail: SendMailEntity): SendMailEntity {
+    async send(mail: SendMailEntity): Promise<SendMailEntity> {
       return {
         to: 'any_to',
         subject: 'any_subject',
@@ -244,7 +244,7 @@ describe('Forgot user password controller', () => {
 
     vi.spyOn(sut, 'randomPassword').mockReturnValueOnce('random_new_password');
 
-    vi.spyOn(mailSenderStub, 'send').mockReturnValueOnce(mailEntity);
+    vi.spyOn(mailSenderStub, 'send').mockReturnValueOnce(Promise.resolve(mailEntity));
 
     const response = await sut.exec(requestBody);
 

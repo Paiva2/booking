@@ -5,12 +5,15 @@ import { globalErrorHandler } from './http/presentation/middlewares';
 import { routesHandler } from './http/presentation/routes';
 import 'express-async-errors';
 import 'dotenv/config';
+import { bullMq } from './http/domain/lib/bullmq';
 
 const app: Express = express();
 app.use(cors());
 app.use(bodyParser.json());
 
 routesHandler(app);
+
+bullMq();
 
 app.use(globalErrorHandler);
 
