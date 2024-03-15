@@ -5,7 +5,7 @@ export async function bullMq() {
   const { mailQueue } = queues;
   const { mailWorker } = workers;
 
-  mailQueue.on('waiting', () => console.log('mailQueue is waiting for new jobs....'));
+  mailQueue.on('waiting', () => console.log('mailQueue is waiting for new jobs...'));
 
   mailWorker.on('completed', (job) => {
     console.log(`Job with ID ${job.id} has been completed.`);

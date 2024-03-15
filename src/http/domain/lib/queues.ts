@@ -6,7 +6,8 @@ export default {
     connection: redisConnection,
     defaultJobOptions: {
       removeOnComplete: { age: 86400 }, // 1 day,
-      attempts: 2,
+      removeOnFail: true,
+      attempts: 1,
     },
   }),
 };
