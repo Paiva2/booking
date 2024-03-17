@@ -17,6 +17,6 @@ export interface RegisterEstablishmentEntity {
   state: string
   country: string
   complement?: string
-  images?: EstablishmentImage[]
+  images: EstablishmentImage[]
   commodities?: CommodityEntity[]
 }

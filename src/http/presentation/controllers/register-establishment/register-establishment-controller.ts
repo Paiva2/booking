@@ -25,6 +25,10 @@ export class RegisterEstablishmentController implements Controller {
       throw new MissingParamException('userId');
     }
 
+    if (!data.establishment.images || !data.establishment.images.length) {
+      throw new MissingParamException('images');
+    }
+
     const requiredFields = [
       'type',
       'name',

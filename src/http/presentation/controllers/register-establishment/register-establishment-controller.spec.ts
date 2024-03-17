@@ -61,7 +61,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -92,7 +92,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -123,7 +123,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -154,7 +154,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -185,7 +185,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -216,7 +216,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -247,7 +247,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -278,7 +278,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -309,7 +309,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -340,7 +340,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -371,7 +371,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -402,7 +402,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -433,7 +433,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -464,7 +464,7 @@ describe('RegisterEstablishmentController', () => {
           country: 'valid_country',
           complement: 'valid_complement',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -495,13 +495,74 @@ describe('RegisterEstablishmentController', () => {
           country: 'valid_country',
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
     };
 
     const expectedException = new MissingParamException('minBookingHour');
+
+    await expect(() => sut.handle(requestBody)).rejects.toStrictEqual(expectedException);
+  });
+
+  test('Should throw exception if images urls is not provided', async () => {
+    const { sut } = sutFactory;
+
+    const requestBody = {
+      body: {
+        userId: 'valid_id',
+        establishment: {
+          type: 'valid_type',
+          name: 'valid_name',
+          description: 'valid_description',
+          contact: 'valid_contact',
+          street: 'valid_street',
+          neighbourhood: 'valid_neighbourhood',
+          zipcode: 'valid_zipcode',
+          number: 'valid_number',
+          city: 'valid_city',
+          state: 'valid_state',
+          country: 'valid_country',
+          complement: 'valid_complement',
+          maxBookingHour: 'valid_booking_hour',
+          images: [],
+          commodities: [],
+        },
+      },
+    };
+
+    const expectedException = new MissingParamException('images');
+
+    await expect(() => sut.handle(requestBody)).rejects.toStrictEqual(expectedException);
+  });
+
+  test('Should throw exception if images is not provided', async () => {
+    const { sut } = sutFactory;
+
+    const requestBody = {
+      body: {
+        userId: 'valid_id',
+        establishment: {
+          type: 'valid_type',
+          name: 'valid_name',
+          description: 'valid_description',
+          contact: 'valid_contact',
+          street: 'valid_street',
+          neighbourhood: 'valid_neighbourhood',
+          zipcode: 'valid_zipcode',
+          number: 'valid_number',
+          city: 'valid_city',
+          state: 'valid_state',
+          country: 'valid_country',
+          complement: 'valid_complement',
+          maxBookingHour: 'valid_booking_hour',
+          commodities: [],
+        },
+      },
+    };
+
+    const expectedException = new MissingParamException('images');
 
     await expect(() => sut.handle(requestBody)).rejects.toStrictEqual(expectedException);
   });
@@ -529,7 +590,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
@@ -565,7 +626,7 @@ describe('RegisterEstablishmentController', () => {
           complement: 'valid_complement',
           maxBookingHour: 'valid_booking_hour',
           minBookingHour: 'valid_booking_hour',
-          images: [],
+          images: ['valid_image_url'],
           commodities: [],
         },
       },
