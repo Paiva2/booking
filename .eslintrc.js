@@ -3,6 +3,9 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
   },
+  plugins: [
+    '@typescript-eslint'
+  ],
   ignorePatterns: [
     'node_modules/',
     '**/node_modules/',

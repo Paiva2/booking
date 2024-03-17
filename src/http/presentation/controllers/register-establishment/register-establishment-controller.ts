@@ -37,6 +37,8 @@ export class RegisterEstablishmentController implements Controller {
       'city',
       'state',
       'country',
+      'maxBookingHour',
+      'minBookingHour',
     ];
 
     const bodyFields = Object.keys(data.establishment);

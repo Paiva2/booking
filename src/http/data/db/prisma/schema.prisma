@@ -57,11 +57,14 @@ model Establishment {
   userId                   User                     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   establishmentAttatchment EstablishmentAttatchment @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
 
+  @@unique([ownerId, name])
   @@map("tb_establishments")
 }
 
 model EstablishmentAttatchment {
   id              String   @id @default(uuid())
+  maxBookingHour  String   @db.VarChar(7)
+  minBookingHour  String   @db.VarChar(7)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
   establishmentId String   @map("establishment_id")
@@ -108,5 +111,6 @@ model BookedDate {
 
   establishmentAttatchment EstablishmentAttatchment? @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
 
+  @@unique([id, bookedDate])
   @@map("tb_booked_dates")
 }

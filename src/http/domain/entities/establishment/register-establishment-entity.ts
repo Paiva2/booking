@@ -10,6 +10,8 @@ export interface RegisterEstablishmentEntity {
   street: string,
   neighbourhood: string
   zipcode: string
+  maxBookingHour: string
+  minBookingHour: string
   number: string
   city: string
   state: string
