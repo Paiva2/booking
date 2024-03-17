@@ -7,6 +7,13 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum EstablishmentTypes {
+  hotel
+  house
+  kitnet
+  apartment
+}
+
 model User {
   id            String   @id @default(uuid())
   name          String   @db.VarChar(100)
@@ -17,11 +24,89 @@ model User {
   neighbourhood String   @db.VarChar(50)
   city          String   @db.VarChar(50)
   state         String   @db.VarChar(20)
-  number        String   @db.VarChar()
-  complement    String   @db.VarChar(100)
+  number        String   @db.VarChar(20)
+  complement    String?  @db.VarChar(100)
   zipcode       String   @db.VarChar(30)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @default(now()) @updatedAt
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
+
+  establishments Establishment[]
 
   @@map("tb_users")
+}
+
+model Establishment {
+  id                         String             @id @default(uuid())
+  type                       EstablishmentTypes
+  name                       String             @db.VarChar(150)
+  contact                    String             @db.VarChar(20)
+  description                String             @db.VarChar(500)
+  street                     String             @db.VarChar(100)
+  neighbourhood              String             @db.VarChar(50)
+  zipcode                    String             @db.VarChar(30)
+  number                     String             @db.VarChar(20)
+  city                       String             @db.VarChar(50)
+  state                      String             @db.VarChar(20)
+  country                    String             @db.VarChar(50)
+  complement                 String?            @db.VarChar(100)
+  createdAt                  DateTime           @default(now()) @map("created_at")
+  updatedAt                  DateTime           @default(now()) @updatedAt @map("updated_at")
+  ownerId                    String             @map("owner_id")
+  establishmentAttatchmentId String             @map("establishment_attatchment_id")
+
+  userId                   User                     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  establishmentAttatchment EstablishmentAttatchment @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
+
+  @@map("tb_establishments")
+}
+
+model EstablishmentAttatchment {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
+  establishmentId String   @map("establishment_id")
+
+  establishment Establishment[]
+  bookedDates   BookedDate[]
+  images        EstablishmentImage[]
+  commodities   Commodity[]
+
+  @@map("tb_establishment_attatchments")
+}
+
+model EstablishmentImage {
+  id                         String   @id @default(uuid())
+  url                        String
+  createdAt                  DateTime @default(now()) @map("created_at")
+  updatedAt                  DateTime @default(now()) @updatedAt @map("updated_at")
+  establishmentAttatchmentId String   @map("establishment_attatchment_id")
+
+  establishmentInfo EstablishmentAttatchment? @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
+
+  @@map("tb_establishment_images")
+}
+
+model Commodity {
+  id                         String   @id @default(uuid())
+  name                       String   @db.VarChar(100)
+  commodityIconUrl           String?  @map("commodity_icon_url")
+  createdAt                  DateTime @default(now()) @map("created_at")
+  updatedAt                  DateTime @default(now()) @updatedAt @map("updated_at")
+  establishmentAttatchmentId String   @map("establishment_attatchment_id")
+
+  establishmentAttatchment EstablishmentAttatchment? @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
+
+  @@map("tb_commodities")
+}
+
+model BookedDate {
+  id                         String   @id @default(uuid())
+  bookedDate                 DateTime @map("booked_date") @db.Timestamptz()
+  createdAt                  DateTime @default(now()) @map("created_at")
+  updatedAt                  DateTime @default(now()) @updatedAt @map("updated_at")
+  establishmentAttatchmentId String   @map("establishment_attatchment_id")
+
+  establishmentAttatchment EstablishmentAttatchment? @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
+
+  @@map("tb_booked_dates")
 }
