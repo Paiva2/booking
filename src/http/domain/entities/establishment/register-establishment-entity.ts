@@ -1,10 +1,12 @@
+import { EstablishmentImage } from '@prisma/client';
 import { EstablishmentTypes } from '../enums';
+import { CommodityEntity } from '..';
 
 export interface RegisterEstablishmentEntity {
   type: EstablishmentTypes
   name: string,
   description: string
-  ownerId: string
+  contact: string,
   street: string,
   neighbourhood: string
   zipcode: string
@@ -13,4 +15,6 @@ export interface RegisterEstablishmentEntity {
   state: string
   country: string
   complement?: string
+  images?: EstablishmentImage[]
+  commodities?: CommodityEntity[]
 }

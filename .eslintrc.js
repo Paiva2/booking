@@ -21,6 +21,7 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': 'off',
     'import/no-extraneous-dependencies': 'off',
     'no-console': 'off',
-    'consistent-return': 'off'
+    'consistent-return': 'off',
+    'import/no-cycle': 'off'
   },
 };
