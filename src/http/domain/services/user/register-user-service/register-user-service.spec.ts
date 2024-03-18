@@ -1,10 +1,14 @@
 import {
-  describe, test, vi, expect,
+  describe,
+  test, vi,
+  expect,
+  beforeEach,
 } from 'vitest';
-import { AlreadyExistsException, InvalidParamException } from '../../../../presentation/exceptions';
 import { RegisterUserService } from './register-user-service';
 import { Encrypter } from '../../../protocols';
-import { InMemoryUserModel } from '../../../../data/in-memory/in-memory-user-model';
+import { UserRepository } from '../../../../data/repositories';
+import { AlreadyExistsException, InvalidParamException } from '../../../../presentation/exceptions';
+import { UserEntity, CreateUserEntity, UpdateUserEntity } from '../../../entities';
 
 const makeEncrypterStub = () => {
   class EncrypterStub implements Encrypter {
@@ -20,9 +24,51 @@ const makeEncrypterStub = () => {
   return new EncrypterStub();
 };
 
-const makeUserRepository = () => new InMemoryUserModel();
+const makeUserRepository = () => {
+  const clientUserEntity = {
+    id: 'valid_id',
+    name: 'valid_name',
+    email: 'valid_email@email.com',
+    contact: 'valid_contact',
+    password: 'hashed_password',
+    neighbourhood: 'valid_neighbourhood',
+    street: 'valid_street',
+    city: 'valid_city',
+    state: 'valid_state',
+    number: 'valid_number',
+    complement: 'valid_complement',
+    zipcode: 'valid_zipcode',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
-const makeSut = () => {
+  class UserRepositoryStub implements UserRepository {
+    async findByEmail(email: string): Promise<UserEntity | null> {
+      return null;
+    }
+
+    async save(user: CreateUserEntity): Promise<UserEntity> {
+      return clientUserEntity;
+    }
+
+    async findById(id: string): Promise<UserEntity | null> {
+      throw new Error('Method not implemented.');
+    }
+
+    async update(userUpdate: UpdateUserEntity): Promise<UserEntity> {
+      throw new Error('Method not implemented.');
+    }
+  }
+
+  return new UserRepositoryStub();
+};
+
+interface SutTypes {
+  sut: RegisterUserService,
+  userRepositoryStub: UserRepository
+}
+
+const makeSut = (): SutTypes => {
   const userRepositoryStub = makeUserRepository();
   const encrypterStub = makeEncrypterStub();
 
@@ -38,9 +84,15 @@ const makeSut = () => {
   };
 };
 
+let sutFactory: SutTypes;
+
 describe('Register user Service', () => {
+  beforeEach(() => {
+    sutFactory = makeSut();
+  });
+
   test('Should call register user service with correct provided params', async () => {
-    const { sut } = makeSut();
+    const { sut } = sutFactory;
 
     const spySut = vi.spyOn(sut, 'exec');
 
@@ -66,7 +118,7 @@ describe('Register user Service', () => {
   });
 
   test('Should throw exception if email is not valid', async () => {
-    const { sut } = makeSut();
+    const { sut } = sutFactory;
 
     vi.spyOn(sut, 'emailCheck').mockReturnValueOnce(false);
 
@@ -93,7 +145,7 @@ describe('Register user Service', () => {
   });
 
   test('Should throw exception if zipcode is not valid', async () => {
-    const { sut } = makeSut();
+    const { sut } = sutFactory;
 
     vi.spyOn(sut, 'postalCodeCheck').mockReturnValueOnce(false);
 
@@ -120,7 +172,7 @@ describe('Register user Service', () => {
   });
 
   test('Should throw exception if contact is not valid', async () => {
-    const { sut } = makeSut();
+    const { sut } = sutFactory;
 
     vi.spyOn(sut, 'contactCheck').mockReturnValueOnce(false);
 
@@ -147,7 +199,7 @@ describe('Register user Service', () => {
   });
 
   test('Should throw exception if password length is not valid', async () => {
-    const { sut } = makeSut();
+    const { sut } = sutFactory;
 
     const requestBody = {
       name: 'valid_name',
@@ -172,7 +224,7 @@ describe('Register user Service', () => {
   });
 
   test('Should throw exception if user already exists', async () => {
-    const { sut, userRepositoryStub } = makeSut();
+    const { sut, userRepositoryStub } = sutFactory;
 
     vi.spyOn(userRepositoryStub, 'findByEmail').mockReturnValueOnce(new Promise((resolve) => resolve({
       id: 'any_id',
@@ -214,7 +266,7 @@ describe('Register user Service', () => {
   });
 
   test('Should call save method with hashed password', async () => {
-    const { sut, userRepositoryStub } = makeSut();
+    const { sut, userRepositoryStub } = sutFactory;
 
     const spyUserRepositoryStub = vi.spyOn(userRepositoryStub, 'save');
 
@@ -243,7 +295,7 @@ describe('Register user Service', () => {
   });
 
   test('Should return new created user it nothing goes wrong', async () => {
-    const { sut } = makeSut();
+    const { sut } = sutFactory;
 
     const requestBody = {
       name: 'valid_name',

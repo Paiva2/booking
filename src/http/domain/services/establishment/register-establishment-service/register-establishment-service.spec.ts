@@ -5,8 +5,6 @@ import {
   vi,
   expect,
 } from 'vitest';
-import { RegisterEstablishmentService } from '..';
-import { EstablishmentRepository, UserRepository } from '../../../../data/repositories';
 import {
   UserEntity,
   CreateUserEntity,
@@ -14,7 +12,9 @@ import {
   EstablishmentEntity,
   RegisterEstablishmentEntity,
 } from '../../../entities';
+import { RegisterEstablishmentService } from '..';
 import { EstablishmentTypes } from '../../../entities/enums';
+import { EstablishmentRepository, UserRepository } from '../../../../data/repositories';
 import { AlreadyExistsException, InvalidParamException, NotFoundException } from '../../../../presentation/exceptions';
 
 const makeEstablishmentRepositoryStub = () => {
