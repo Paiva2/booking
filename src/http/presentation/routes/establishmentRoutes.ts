@@ -10,7 +10,7 @@ const prefix = '/api/v1/establishment';
 
 export default function establishmentRoutes(app: Express) {
   app.post(
-    `${prefix}/establishment`,
+    `${prefix}/register`,
     [tokenVerify, zodDto(registerEstablishmentDTO)],
     async (req: Request, res: Response) => {
       const { registerEstablishmentController } = await establishmentFactory.handle();

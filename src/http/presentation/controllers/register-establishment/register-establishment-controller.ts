@@ -1,17 +1,32 @@
+import {
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  JwtHandler,
+} from '../../protocols';
 import { RegisterEstablishmentEntity } from '../../../domain/entities';
 import { Service } from '../../../domain/protocols';
 import { MissingParamException } from '../../exceptions';
-import { Controller, HttpRequest, HttpResponse } from '../../protocols';
 
 export class RegisterEstablishmentController implements Controller {
-  public constructor(private readonly registerEstablishmentService: Service) {}
+  public constructor(
+    private readonly registerEstablishmentService: Service,
+    private readonly jwtHandler: JwtHandler,
+  ) {}
 
-  public async handle({ body }: HttpRequest): Promise<HttpResponse> {
-    this.dtoCheck(body);
+  public async handle({ body, headers }: HttpRequest): Promise<HttpResponse> {
+    const getUserId = this.jwtHandler.decode(headers.authorization.replace('Bearer ', ''));
+
+    const { establishment } = body;
+
+    this.dtoCheck({
+      establishment,
+      userId: getUserId,
+    });
 
     await this.registerEstablishmentService.exec({
-      userId: body.userId,
-      establishment: body.establishment,
+      userId: getUserId,
+      establishment,
     });
 
     return {

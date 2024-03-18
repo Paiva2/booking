@@ -2,9 +2,23 @@ import {
   test, describe, beforeEach, vi, expect,
 } from 'vitest';
 import { RegisterEstablishmentController } from './register-establishment-controller';
-import { Controller } from '../../protocols';
+import { Controller, JwtHandler } from '../../protocols';
 import { Service } from '../../../domain/protocols';
 import { MissingParamException } from '../../exceptions';
+
+const makeJwtHandlerStub = () => {
+  class JwtHandlerStub implements JwtHandler {
+    sign(subject: string): string {
+      return 'valid_token';
+    }
+
+    decode(token: string): string {
+      return 'valid_id';
+    }
+  }
+
+  return new JwtHandlerStub();
+};
 
 const makeRegisterEstablishmentServiceStub = () => {
   class RegisterEstablishmentServiceStub implements Service {
@@ -19,15 +33,18 @@ const makeRegisterEstablishmentServiceStub = () => {
 interface SutTypes {
   sut: Controller
   registerEstablishmentServiceStub: Service
+  jwtHandlerStub: JwtHandler
 }
 
 const makeSut = (): SutTypes => {
   const registerEstablishmentServiceStub = makeRegisterEstablishmentServiceStub();
-  const sut = new RegisterEstablishmentController(registerEstablishmentServiceStub);
+  const jwtHandlerStub = makeJwtHandlerStub();
+  const sut = new RegisterEstablishmentController(registerEstablishmentServiceStub, jwtHandlerStub);
 
   return {
     sut,
     registerEstablishmentServiceStub,
+    jwtHandlerStub,
   };
 };
 
@@ -44,8 +61,10 @@ describe('RegisterEstablishmentController', () => {
     const spySut = vi.spyOn(sut, 'handle');
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           name: 'valid_name',
@@ -73,12 +92,55 @@ describe('RegisterEstablishmentController', () => {
     expect(spySut).toHaveBeenCalledWith(requestBody);
   });
 
-  test('Should throw exception if userId is not provided', async () => {
-    const { sut } = sutFactory;
+  test('Should call JwtHandler decode method with correct provided params', async () => {
+    const { sut, jwtHandlerStub } = sutFactory;
+
+    const spyJwtHandlerStub = vi.spyOn(jwtHandlerStub, 'decode');
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
         establishment: {
+          type: 'valid_type',
+          name: 'valid_name',
+          description: 'valid_description',
+          contact: 'valid_contact',
+          street: 'valid_street',
+          neighbourhood: 'valid_neighbourhood',
+          zipcode: 'valid_zipcode',
+          number: 'valid_number',
+          city: 'valid_city',
+          state: 'valid_state',
+          country: 'valid_country',
+          complement: 'valid_complement',
+          maxBookingHour: 'valid_booking_hour',
+          minBookingHour: 'valid_booking_hour',
+          images: ['valid_image_url'],
+          commodities: [],
+        },
+      },
+    };
+
+    await sut.handle(requestBody);
+
+    expect(spyJwtHandlerStub).toHaveBeenCalledOnce();
+    expect(spyJwtHandlerStub).toHaveBeenCalledWith('valid_token');
+  });
+
+  test('Should throw exception if userId is not provided', async () => {
+    const { sut, jwtHandlerStub } = sutFactory;
+
+    vi.spyOn(jwtHandlerStub, 'decode').mockReturnValueOnce('');
+
+    const requestBody = {
+      headers: {
+        authorization: '',
+      },
+      body: {
+        establishment: {
+          type: 'valid_type',
           name: 'valid_name',
           description: 'valid_description',
           contact: 'valid_contact',
@@ -107,8 +169,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           description: 'valid_description',
@@ -138,8 +202,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           description: 'valid_description',
@@ -169,8 +235,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -200,8 +268,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -231,8 +301,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -262,8 +334,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -293,8 +367,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -324,8 +400,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -355,8 +433,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -386,8 +466,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -417,8 +499,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           name: 'valid_name',
           type: 'valid_type',
@@ -448,8 +532,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           name: 'valid_name',
@@ -479,8 +565,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           name: 'valid_name',
@@ -510,8 +598,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           name: 'valid_name',
@@ -541,8 +631,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           name: 'valid_name',
@@ -573,8 +665,10 @@ describe('RegisterEstablishmentController', () => {
     const spySut = vi.spyOn(registerEstablishmentServiceStub, 'exec');
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           name: 'valid_name',
@@ -600,7 +694,7 @@ describe('RegisterEstablishmentController', () => {
 
     expect(spySut).toHaveBeenCalledOnce();
     expect(spySut).toHaveBeenCalledWith({
-      userId: requestBody.body.userId,
+      userId: 'valid_id',
       establishment: requestBody.body.establishment,
     });
   });
@@ -609,8 +703,10 @@ describe('RegisterEstablishmentController', () => {
     const { sut } = sutFactory;
 
     const requestBody = {
+      headers: {
+        authorization: 'valid_token',
+      },
       body: {
-        userId: 'valid_id',
         establishment: {
           type: 'valid_type',
           name: 'valid_name',
