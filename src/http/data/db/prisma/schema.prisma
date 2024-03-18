@@ -36,26 +36,25 @@ model User {
 }
 
 model Establishment {
-  id                         String             @id @default(uuid())
-  type                       EstablishmentTypes
-  name                       String             @db.VarChar(150)
-  contact                    String             @db.VarChar(20)
-  description                String             @db.VarChar(500)
-  street                     String             @db.VarChar(100)
-  neighbourhood              String             @db.VarChar(50)
-  zipcode                    String             @db.VarChar(30)
-  number                     String             @db.VarChar(20)
-  city                       String             @db.VarChar(50)
-  state                      String             @db.VarChar(20)
-  country                    String             @db.VarChar(50)
-  complement                 String?            @db.VarChar(100)
-  createdAt                  DateTime           @default(now()) @map("created_at")
-  updatedAt                  DateTime           @default(now()) @updatedAt @map("updated_at")
-  ownerId                    String             @map("owner_id")
-  establishmentAttatchmentId String?            @map("establishment_attatchment_id")
+  id            String             @id @default(uuid())
+  type          EstablishmentTypes
+  name          String             @db.VarChar(150)
+  contact       String             @db.VarChar(20)
+  description   String             @db.VarChar(500)
+  street        String             @db.VarChar(100)
+  neighbourhood String             @db.VarChar(50)
+  zipcode       String             @db.VarChar(30)
+  number        String             @db.VarChar(20)
+  city          String             @db.VarChar(50)
+  state         String             @db.VarChar(20)
+  country       String             @db.VarChar(50)
+  complement    String?            @db.VarChar(100)
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @default(now()) @updatedAt @map("updated_at")
+  ownerId       String             @map("owner_id")
 
   user                     User                      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  establishmentAttatchment EstablishmentAttatchment? @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
+  establishmentAttatchment EstablishmentAttatchment?
 
   @@unique([ownerId, name])
   @@map("tb_establishments")
@@ -67,12 +66,13 @@ model EstablishmentAttatchment {
   minBookingHour  String   @db.VarChar(7)
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @default(now()) @updatedAt @map("updated_at")
-  establishmentId String   @map("establishment_id")
+  establishmentId String   @unique @map("establishment_id")
 
-  establishment Establishment[]
-  bookedDates   BookedDate[]
-  images        EstablishmentImage[]
-  commodities   Commodity[]
+  bookedDates BookedDate[]
+  images      EstablishmentImage[]
+  commodities Commodity[]
+
+  establishmentAttatchment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
 
   @@map("tb_establishment_attatchments")
 }

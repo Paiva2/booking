@@ -17,7 +17,7 @@ export class RegisterEstablishmentController implements Controller {
   public async handle({ body, headers }: HttpRequest): Promise<HttpResponse> {
     const getUserId = this.jwtHandler.decode(headers.authorization.replace('Bearer ', ''));
 
-    const { establishment } = body;
+    const establishment = body;
 
     this.dtoCheck({
       establishment,
@@ -40,7 +40,7 @@ export class RegisterEstablishmentController implements Controller {
       throw new MissingParamException('userId');
     }
 
-    if (!data.establishment.images || !data.establishment.images.length) {
+    if (!data?.establishment.images || !data.establishment.images.length) {
       throw new MissingParamException('images');
     }
 

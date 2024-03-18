@@ -2,64 +2,86 @@ import prisma from '../lib/prisma';
 import { RegisterEstablishmentEntity, EstablishmentEntity } from '../../domain/entities';
 import { EstablishmentRepository } from '../repositories';
 
+interface ImageCreationSchema {
+  url:string
+}
+
+interface CommodityCreationSchema {
+  name: string,
+  commodityIconUrl?: string
+}
+
 export class EstablishmentModel implements EstablishmentRepository {
   public async save({ establishment, userId }: {
     userId: string,
     establishment: RegisterEstablishmentEntity }): Promise<EstablishmentEntity> {
     let createEstablishment = {} as EstablishmentEntity;
 
-    try {
-      await prisma.$executeRawUnsafe('BEGIN TRANSACTION');
+    await prisma.$transaction(async (prismaHandler) => {
+      try {
+        let images = [] as ImageCreationSchema[];
+        let commodities = [] as CommodityCreationSchema[];
 
-      createEstablishment = await prisma.establishment.create({
-        data: {
-          ownerId: userId,
-          city: establishment.city,
-          contact: establishment.contact,
-          country: establishment.country,
-          description: establishment.description,
-          name: establishment.name,
-          neighbourhood: establishment.neighbourhood,
-          number: establishment.number,
-          state: establishment.state,
-          street: establishment.street,
-          type: establishment.type,
-          zipcode: establishment.zipcode,
-          complement: establishment.complement,
-        },
-        include: {
-          establishmentAttatchment: true,
-        },
-      }) as EstablishmentEntity;
+        if (establishment.images?.length) {
+          images = establishment.images.map((image) => ({
+            url: image,
+          }));
+        }
 
-      if (establishment.images.length) {
-        const images = establishment.images.map((image) => ({
-          url: image,
-          establishmentAttatchmentId: createEstablishment?.establishmentAttatchmentId as string,
-        }));
+        if (establishment.commodities?.length) {
+          commodities = establishment.commodities.map((commodity) => ({
+            name: commodity.name,
+            commodityIconUrl: commodity.iconUrl,
+          }));
+        }
 
-        await prisma.establishmentImage.createMany({
-          data: images,
-        });
+        createEstablishment = await prismaHandler.establishment.create({
+          data: {
+            ownerId: userId,
+            city: establishment.city,
+            contact: establishment.contact,
+            country: establishment.country,
+            description: establishment.description,
+            name: establishment.name,
+            neighbourhood: establishment.neighbourhood,
+            number: establishment.number,
+            state: establishment.state,
+            street: establishment.street,
+            type: establishment.type,
+            zipcode: establishment.zipcode,
+            complement: establishment.complement,
+
+            establishmentAttatchment: {
+              create: {
+                maxBookingHour: establishment.maxBookingHour,
+                minBookingHour: establishment.minBookingHour,
+
+                commodities: {
+                  createMany: {
+                    data: commodities,
+                  },
+                },
+
+                images: {
+                  createMany: {
+                    data: images,
+                  },
+                },
+              },
+            },
+          },
+
+          include: {
+            establishmentAttatchment: true,
+          },
+        }) as EstablishmentEntity;
+
+        return createEstablishment;
+      } catch (e) {
+        console.log(e);
+        throw e;
       }
-
-      if (establishment.commodities.length) {
-        const commodities = establishment.commodities.map((commodity) => ({
-          name: commodity.name,
-          commodityIconUrl: commodity.iconUrl,
-          establishmentAttatchmentId: createEstablishment?.establishmentAttatchmentId as string,
-        }));
-
-        await prisma.commodity.createMany({
-          data: commodities,
-        });
-      }
-
-      await prisma.$executeRawUnsafe('COMMIT TRANSACTION');
-    } catch (e) {
-      console.log(e);
-      await prisma.$executeRawUnsafe('ROLLBACK TRANSACTION');
-    }
+    });
 
     return createEstablishment;
   }

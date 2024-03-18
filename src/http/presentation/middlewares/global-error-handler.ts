@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { GlobalException } from '../exceptions/global-exception';
 
 export function globalErrorHandler(
-  error: GlobalException,
+  error: GlobalException | Error,
   _: Request,
   res:Response,
   next: NextFunction,
@@ -13,6 +13,13 @@ export function globalErrorHandler(
     return res.status(status).send({
       message: error.message ?? 'Internal server error.',
       statusCode: status,
+    });
+  }
+
+  if (error instanceof Error) {
+    return res.status(500).send({
+      message: error.message ?? 'Internal server error.',
+      statusCode: 500,
     });
   }
 
