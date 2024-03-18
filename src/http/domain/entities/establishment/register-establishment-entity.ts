@@ -16,5 +16,5 @@ export interface RegisterEstablishmentEntity {
   country: string
   complement?: string
   images: string[]
-  commodities: string[]
+  commodities: { name: string, iconUrl?:string }[]
 }

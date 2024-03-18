@@ -14,6 +14,7 @@ export interface EstablishmentEntity {
   state: string
   country: string
   complement: string
+  establishmentAttatchmentId?: string
   createdAt: Date
   updatedAt: Date
 }

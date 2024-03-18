@@ -52,10 +52,10 @@ model Establishment {
   createdAt                  DateTime           @default(now()) @map("created_at")
   updatedAt                  DateTime           @default(now()) @updatedAt @map("updated_at")
   ownerId                    String             @map("owner_id")
-  establishmentAttatchmentId String             @map("establishment_attatchment_id")
+  establishmentAttatchmentId String?            @map("establishment_attatchment_id")
 
-  userId                   User                     @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  establishmentAttatchment EstablishmentAttatchment @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
+  user                     User                      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  establishmentAttatchment EstablishmentAttatchment? @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
 
   @@unique([ownerId, name])
   @@map("tb_establishments")

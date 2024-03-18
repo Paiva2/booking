@@ -142,7 +142,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'valid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -175,7 +181,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'valid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -207,7 +219,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'valid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -239,7 +257,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -271,7 +295,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -300,7 +330,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -329,7 +365,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -358,7 +400,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -390,7 +438,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -423,7 +477,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -455,7 +515,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -507,7 +573,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -539,7 +611,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
@@ -592,7 +670,13 @@ describe('RegisterEstablishmentService', () => {
         country: 'invalid_country',
         complement: 'valid_complement',
         images: ['valid_url_1'],
-        commodities: ['Pet free', 'Free Wi-fi'],
+        commodities: [{
+          name: 'Pet free',
+          iconUrl: 'any_url',
+        }, {
+          name: 'Free Wi-fi',
+          iconUrl: 'any_url',
+        }],
       },
     };
 
