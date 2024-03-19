@@ -10,8 +10,8 @@ export interface EstablishmentRepository {
     name: string }): Promise<EstablishmentEntity | null>
 
   find(query: {
-    page: string,
-    perPage: string,
+    page: number,
+    perPage: number,
     name?: string,
     state?: string,
     city?: string,
