@@ -2,12 +2,12 @@ import {
   beforeEach, describe, expect, test, vi,
 } from 'vitest';
 import { ListEstablishmentController } from './list-establishments-controller';
-import { EstablishmentRepository } from '../../../data/repositories';
-import { RegisterEstablishmentEntity, EstablishmentEntity } from '../../../domain/entities';
+import { EstablishmentEntity } from '../../../domain/entities';
 import { EstablishmentTypes } from '../../../domain/entities/enums';
 import { MissingParamException } from '../../exceptions';
+import { Service } from '../../../domain/protocols';
 
-const makeEstablishmentRepositoryStub = () => {
+const makeListEstablishmentServiceStub = () => {
   const mockEstablishment: EstablishmentEntity = {
     id: 'any_id',
     type: EstablishmentTypes.APARTMENT,
@@ -26,32 +26,8 @@ const makeEstablishmentRepositoryStub = () => {
     updatedAt: new Date(),
   };
 
-  class EstablishmentRepositoryStub implements EstablishmentRepository {
-    async save(dto: {
-      userId: string,
-      establishment: RegisterEstablishmentEntity,
-    }): Promise<EstablishmentEntity> {
-      throw new Error('Method not implemented.');
-    }
-
-    async findByName(dto: {
-      userId: string,
-      name: string;
-    }): Promise<EstablishmentEntity | null> {
-      throw new Error('Method not implemented.');
-    }
-
-    async find(query: {
-      page: string,
-      perPage: string,
-      name?: string | undefined,
-      state?: string | undefined,
-      city?: string | undefined;
-    }):Promise<{
-        page: number,
-        perPage: number,
-        list: EstablishmentEntity[]
-      }> {
+  class ListEstablishmentServiceStub implements Service {
+    async exec(dto: any): Promise<any> {
       return {
         page: 1,
         perPage: 5,
@@ -60,21 +36,21 @@ const makeEstablishmentRepositoryStub = () => {
     }
   }
 
-  return new EstablishmentRepositoryStub();
+  return new ListEstablishmentServiceStub();
 };
 
 interface SutTypes {
   sut: ListEstablishmentController,
-  establishmentRepositoryStub: EstablishmentRepository
+  listEstablishmentServiceStub: Service
 }
 
 const makeSut = (): SutTypes => {
-  const establishmentRepositoryStub = makeEstablishmentRepositoryStub();
-  const sut = new ListEstablishmentController(establishmentRepositoryStub);
+  const listEstablishmentServiceStub = makeListEstablishmentServiceStub();
+  const sut = new ListEstablishmentController(listEstablishmentServiceStub);
 
   return {
     sut,
-    establishmentRepositoryStub,
+    listEstablishmentServiceStub,
   };
 };
 
@@ -140,10 +116,10 @@ describe('ListEstablishmentController', () => {
     await expect(() => sut.handle(requestQuery)).rejects.toStrictEqual(expectedException);
   });
 
-  test('Should call EstablishmentRepository find method with correct provided params', async () => {
-    const { sut, establishmentRepositoryStub } = sutFactory;
+  test('Should call ListEstablishmentService find method with correct provided params', async () => {
+    const { sut, listEstablishmentServiceStub } = sutFactory;
 
-    const spyEstablishmentRepositoryStub = vi.spyOn(establishmentRepositoryStub, 'find');
+    const spyEstablishmentRepositoryStub = vi.spyOn(listEstablishmentServiceStub, 'exec');
 
     const requestQuery = {
       query: {

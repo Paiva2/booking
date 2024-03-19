@@ -1,14 +1,14 @@
-import { EstablishmentRepository } from '../../../data/repositories';
+import { Service } from '../../../domain/protocols';
 import { MissingParamException } from '../../exceptions';
 import { Controller, HttpRequest, HttpResponse } from '../../protocols';
 
 export class ListEstablishmentController implements Controller {
-  public constructor(private readonly establishmentRepository: EstablishmentRepository) {}
+  public constructor(private readonly listEstablishmentService: Service) {}
 
   public async handle(req: HttpRequest): Promise<HttpResponse> {
     this.dtoCheck(req.query);
 
-    const listEstablishments = await this.establishmentRepository.find({
+    const listEstablishments = await this.listEstablishmentService.exec({
       ...req.query,
       page: Number(req.query.page),
       perPage: Number(req.query.perPage),
