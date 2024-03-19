@@ -12,10 +12,14 @@ import {
   EstablishmentEntity,
   RegisterEstablishmentEntity,
 } from '../../../entities';
+import {
+  AlreadyExistsException,
+  InvalidParamException,
+  NotFoundException,
+} from '../../../../presentation/exceptions';
 import { RegisterEstablishmentService } from '..';
 import { EstablishmentTypes } from '../../../entities/enums';
 import { EstablishmentRepository, UserRepository } from '../../../../data/repositories';
-import { AlreadyExistsException, InvalidParamException, NotFoundException } from '../../../../presentation/exceptions';
 
 const makeEstablishmentRepositoryStub = () => {
   const mockEstablishment: EstablishmentEntity = {
@@ -37,6 +41,20 @@ const makeEstablishmentRepositoryStub = () => {
   };
 
   class EstablishmentRepositoryStub implements EstablishmentRepository {
+    async find(query: {
+      page: string,
+      perPage: string,
+      name?: string | undefined,
+      state?: string | undefined,
+      city?: string | undefined;
+    }):Promise<{
+        page: number,
+        perPage: number,
+        list: EstablishmentEntity[]
+      }> {
+      throw new Error('Method not implemented.');
+    }
+
     async save(dto: {
       userId: string,
       establishment: RegisterEstablishmentEntity; }): Promise<EstablishmentEntity> {
@@ -71,11 +89,11 @@ const makeUserRepositoryStub = () => {
 
   class UserRepositoryStub implements UserRepository {
     async findByEmail(email: string): Promise<UserEntity | null> {
-      return mockUser;
+      throw new Error('Method not implemented.');
     }
 
     async save(user: CreateUserEntity): Promise<UserEntity> {
-      return mockUser;
+      throw new Error('Method not implemented.');
     }
 
     async findById(id: string): Promise<UserEntity | null> {
@@ -83,7 +101,7 @@ const makeUserRepositoryStub = () => {
     }
 
     async update(userUpdate: UpdateUserEntity): Promise<UserEntity> {
-      return mockUser;
+      throw new Error('Method not implemented.');
     }
   }
 
@@ -131,6 +149,7 @@ describe('RegisterEstablishmentService', () => {
         name: 'valid_name',
         description: 'valid_description',
         contact: 'valid_contact',
+
         street: 'valid_street',
         neighbourhood: 'valid_neighbourhood',
         zipcode: 'valid_zipcode',

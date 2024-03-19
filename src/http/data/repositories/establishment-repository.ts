@@ -8,4 +8,16 @@ export interface EstablishmentRepository {
   findByName(dto: {
     userId: string,
     name: string }): Promise<EstablishmentEntity | null>
+
+  find(query: {
+    page: string,
+    perPage: string,
+    name?: string,
+    state?: string,
+    city?: string,
+  }):Promise<{
+    page: number,
+    perPage: number,
+    list: EstablishmentEntity[]
+  }>
 }
