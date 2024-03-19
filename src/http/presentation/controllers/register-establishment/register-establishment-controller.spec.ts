@@ -41,6 +41,10 @@ const makeSut = (): SutTypes => {
   const jwtHandlerStub = makeJwtHandlerStub();
   const sut = new RegisterEstablishmentController(registerEstablishmentServiceStub, jwtHandlerStub);
 
+  vi.spyOn(registerEstablishmentServiceStub, 'exec').mockImplementation(
+    (() => Promise.resolve({})),
+  );
+
   return {
     sut,
     registerEstablishmentServiceStub,
