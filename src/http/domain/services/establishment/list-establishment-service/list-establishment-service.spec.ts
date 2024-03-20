@@ -97,12 +97,10 @@ describe('ListEstablishmentService', () => {
       state: 'SP',
     };
 
-    await sut.exec({
-      query: queryParams,
-    });
+    await sut.exec(queryParams);
 
     expect(spySut).toHaveBeenCalledOnce();
-    expect(spySut).toHaveBeenCalledWith({ query: queryParams });
+    expect(spySut).toHaveBeenCalledWith(queryParams);
   });
 
   test('Should call EstablishmentRepository find method with correct provided params', async () => {
@@ -118,9 +116,7 @@ describe('ListEstablishmentService', () => {
       state: 'SP',
     };
 
-    await sut.exec({
-      query: queryParams,
-    });
+    await sut.exec(queryParams);
 
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledOnce();
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledWith(queryParams);
@@ -139,9 +135,7 @@ describe('ListEstablishmentService', () => {
       state: 'SP',
     };
 
-    await sut.exec({
-      query: queryParams,
-    });
+    await sut.exec(queryParams);
 
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledOnce();
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledWith({
@@ -163,9 +157,7 @@ describe('ListEstablishmentService', () => {
       state: 'SP',
     };
 
-    await sut.exec({
-      query: queryParams,
-    });
+    await sut.exec(queryParams);
 
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledOnce();
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledWith({
@@ -187,9 +179,7 @@ describe('ListEstablishmentService', () => {
       state: 'SP',
     };
 
-    await sut.exec({
-      query: queryParams,
-    });
+    await sut.exec(queryParams);
 
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledOnce();
     expect(spyEstablishmentRepositoryStub).toHaveBeenCalledWith({
@@ -209,9 +199,7 @@ describe('ListEstablishmentService', () => {
       state: 'SP',
     };
 
-    const response = await sut.exec({
-      query: queryParams,
-    });
+    const response = await sut.exec(queryParams);
 
     expect(response).toEqual({
       page: 1,
