@@ -17,7 +17,7 @@ export class RegisterEstablishmentController implements Controller {
   public async handle({ body, headers }: HttpRequest): Promise<HttpResponse> {
     const getUserId = this.jwtHandler.decode(headers.authorization.replace('Bearer ', ''));
 
-    const { establishment } = body;
+    const establishment = body;
 
     this.dtoCheck({
       establishment,
