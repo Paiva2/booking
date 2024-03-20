@@ -1,34 +1,41 @@
 import { UserModel } from '../../data/db';
 import { EstablishmentModel } from '../../data/db/establishment-model';
-import { RegisterEstablishmentService } from '../../domain/services/establishment';
+import { ListEstablishmentService, RegisterEstablishmentService } from '../../domain/services/establishment';
+import { ListEstablishmentController } from '../controllers/list-establishments/list-establishments-controller';
 import { RegisterEstablishmentController } from '../controllers/register-establishment/register-establishment-controller';
 import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 
 export class EstablishmentFactory {
   public async handle() {
     const { jwtHandler } = this.presentationProtocols();
-    const { registerEstablishmentService } = await this.services();
+    const { registerEstablishmentService, listEstablishmentService } = await this.services();
 
     const registerEstablishmentController = new RegisterEstablishmentController(
       registerEstablishmentService,
       jwtHandler,
     );
 
+    const listEstablishmentController = new ListEstablishmentController(listEstablishmentService);
+
     return {
       registerEstablishmentController,
+      listEstablishmentController,
     };
   }
 
   private async services() {
-    const models = this.models();
+    const { establishmentModel, userModel } = this.models();
 
     const registerEstablishmentService = new RegisterEstablishmentService(
-      models.userModel,
-      models.establishmentModel,
+      userModel,
+      establishmentModel,
     );
+
+    const listEstablishmentService = new ListEstablishmentService(establishmentModel);
 
     return {
       registerEstablishmentService,
+      listEstablishmentService,
     };
   }
 

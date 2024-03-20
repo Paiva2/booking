@@ -100,4 +100,46 @@ export class EstablishmentModel implements EstablishmentRepository {
 
     return find;
   }
+
+  async find(query: {
+    page: number;
+    perPage: number;
+    name?: string | undefined;
+    state?: string | undefined;
+    city?: string | undefined;
+  }): Promise<{ page: number; perPage: number; list: EstablishmentEntity[]; }> {
+    const hasFilters = Object.keys(query)
+      .filter((queries) => queries !== 'page' && queries !== 'perPage').length;
+
+    const list = await prisma.establishment.findMany({
+      where: hasFilters ? {
+        OR: [
+          query.name ? { name: { contains: query.name } } : {},
+          query.city ? { city: { contains: query.city } } : {},
+          query.state ? { state: { contains: query.state } } : {},
+        ],
+      } : {},
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            contact: true,
+          },
+        },
+      },
+      skip: (query.page - 1) * query.perPage,
+      take: query.perPage,
+    }) as EstablishmentEntity[];
+
+    return {
+      page: query.page,
+      perPage: query.perPage,
+      list,
+    };
+  }
 }

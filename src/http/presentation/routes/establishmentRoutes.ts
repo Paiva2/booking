@@ -20,4 +20,15 @@ export default function establishmentRoutes(app: Express) {
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
+
+  app.get(
+    `${prefix}/list`,
+    async (req: Request, res: Response) => {
+      const { listEstablishmentController } = await establishmentFactory.handle();
+
+      const controllerResponse = await listEstablishmentController.handle(req);
+
+      return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
+    },
+  );
 }

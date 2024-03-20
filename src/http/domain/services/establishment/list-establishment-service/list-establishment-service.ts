@@ -15,32 +15,32 @@ export class ListEstablishmentService implements Service {
     private readonly establishmentRepository: EstablishmentRepository,
   ) {}
 
-  public async exec(dto: { query: ListEstablishmentServiceRequest }): Promise<{
+  public async exec(dto: ListEstablishmentServiceRequest): Promise<{
     page: number;
     perPage: number;
     list: EstablishmentEntity[];
   }> {
-    const { query } = dto;
+    const { page, perPage } = dto;
 
-    let page = Number(query.page);
-    let perPage = Number(query.perPage);
+    let queryPage = Number(page);
+    let queryPerPage = Number(perPage);
 
     if (page < 1) {
-      page = 1;
+      queryPage = 1;
     }
 
     if (perPage > 100) {
-      perPage = 100;
+      queryPerPage = 100;
     }
 
     if (perPage < 5) {
-      perPage = 5;
+      queryPerPage = 5;
     }
 
     const queryParams = {
-      ...query,
-      page,
-      perPage,
+      ...dto,
+      page: queryPage,
+      perPage: queryPerPage,
     };
 
     const list = await this.establishmentRepository.find(queryParams);
