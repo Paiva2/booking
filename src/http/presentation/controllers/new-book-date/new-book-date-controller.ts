@@ -15,7 +15,8 @@ export class NewBookDateController implements Controller {
 
     const requestItens = {
       userId: parseUserId,
-      establishmentAttatchmentId: req.params.establishmentAttatchmentId,
+      establishmentAttatchmentId: req.body?.establishmentAttatchmentId,
+      bookedDate: req.body?.bookedDate,
     };
 
     this.dtoCheck(requestItens);
@@ -31,13 +32,17 @@ export class NewBookDateController implements Controller {
     };
   }
 
-  dtoCheck(data: { userId: string, establishmentAttatchmentId: string }): void {
+  dtoCheck(data: { userId: string, establishmentAttatchmentId: string, bookedDate: string }): void {
     if (!data.userId) {
       throw new MissingParamException('userId');
     }
 
     if (!data.establishmentAttatchmentId) {
       throw new MissingParamException('establishmentAttatchmentId');
+    }
+
+    if (!data.bookedDate) {
+      throw new MissingParamException('bookedDate');
     }
   }
 }

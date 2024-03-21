@@ -65,8 +65,9 @@ describe('NewBookDateController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      body: {
         establishmentAttatchmentId: 'valid_attatchment_id',
+        bookedDate: 'valid_date',
       },
     };
 
@@ -85,8 +86,9 @@ describe('NewBookDateController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      body: {
         establishmentAttatchmentId: 'valid_attatchment_id',
+        bookedDate: 'valid_date',
       },
     };
 
@@ -105,8 +107,9 @@ describe('NewBookDateController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      body: {
         establishmentAttatchmentId: 'valid_attatchment_id',
+        bookedDate: 'valid_date',
       },
     };
 
@@ -117,7 +120,8 @@ describe('NewBookDateController', () => {
     expect(spySut).toHaveBeenCalledOnce();
     expect(spySut).toHaveBeenCalledWith({
       userId: 'valid_id',
-      establishmentAttatchmentId: request.params.establishmentAttatchmentId,
+      establishmentAttatchmentId: request.body.establishmentAttatchmentId,
+      bookedDate: 'valid_date',
     });
   });
 
@@ -128,8 +132,9 @@ describe('NewBookDateController', () => {
       headers: {
         authorization: null,
       },
-      params: {
+      body: {
         establishmentAttatchmentId: 'valid_attatchment_id',
+        bookedDate: 'valid_date',
       },
     };
 
@@ -164,8 +169,9 @@ describe('NewBookDateController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      body: {
         establishmentAttatchmentId: 'valid_attatchment_id',
+        bookedDate: 'valid_date',
       },
     };
 
@@ -176,7 +182,8 @@ describe('NewBookDateController', () => {
     expect(spyNewBookDateService).toHaveBeenCalledOnce();
     expect(spyNewBookDateService).toHaveBeenCalledWith({
       userId: 'valid_id',
-      establishmentAttatchmentId: request.params.establishmentAttatchmentId,
+      establishmentAttatchmentId: request.body.establishmentAttatchmentId,
+      bookedDate: 'valid_date',
     });
   });
 
@@ -187,8 +194,9 @@ describe('NewBookDateController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      body: {
         establishmentAttatchmentId: 'valid_attatchment_id',
+        bookedDate: 'valid_date',
       },
     };
 
