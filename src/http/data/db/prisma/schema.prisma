@@ -31,6 +31,7 @@ model User {
   updatedAt     DateTime @default(now()) @updatedAt @map("updated_at")
 
   establishments Establishment[]
+  BookedDate     BookedDate[]
 
   @@map("tb_users")
 }
@@ -108,8 +109,10 @@ model BookedDate {
   createdAt                  DateTime @default(now()) @map("created_at")
   updatedAt                  DateTime @default(now()) @updatedAt @map("updated_at")
   establishmentAttatchmentId String   @map("establishment_attatchment_id")
+  userId                     String   @map("user_id")
 
   establishmentAttatchment EstablishmentAttatchment? @relation(fields: [establishmentAttatchmentId], references: [id], onDelete: Cascade)
+  user                     User?                     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([id, bookedDate])
   @@map("tb_booked_dates")
