@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import { globalErrorHandler } from './http/presentation/middlewares';
 import { routesHandler } from './http/presentation/routes';
+import { bullMq } from './http/domain/lib/bullmq';
 import 'express-async-errors';
 import 'dotenv/config';
-import { bullMq } from './http/domain/lib/bullmq';
 
 const app: Express = express();
 app.use(cors());

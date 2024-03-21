@@ -131,6 +131,12 @@ export class EstablishmentModel implements EstablishmentRepository {
             contact: true,
           },
         },
+        establishmentAttatchment: {
+          select: {
+            id: true,
+            establishmentId: true,
+          },
+        },
       },
       skip: (query.page - 1) * query.perPage,
       take: query.perPage,
