@@ -173,8 +173,8 @@ describe('ListEstablishmentController', () => {
           state: 'any_state',
           country: 'any_country',
           complement: 'any_complement',
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          createdAt: expect.any(Date),
+          updatedAt: expect.any(Date),
         }],
       },
     });
