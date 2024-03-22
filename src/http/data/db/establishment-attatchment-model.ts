@@ -19,6 +19,15 @@ export class EstablishmentAttatchmentModel implements EstablishmentAttatchmentRe
       },
     });
 
-    return find;
+    if (!find) return null;
+
+    return {
+      ...find,
+      establishment: {
+        id: find.establishmentAttatchment.id,
+        ownerId: find.establishmentAttatchment.ownerId,
+        name: find.establishmentAttatchment.name,
+      },
+    };
   }
 }
