@@ -8,6 +8,15 @@ export class EstablishmentAttatchmentModel implements EstablishmentAttatchmentRe
       where: {
         id,
       },
+      include: {
+        establishmentAttatchment: {
+          select: {
+            id: true,
+            ownerId: true,
+            name: true,
+          },
+        },
+      },
     });
 
     return find;

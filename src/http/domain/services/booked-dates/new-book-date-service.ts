@@ -5,6 +5,7 @@ import {
 } from '../../../data/repositories';
 import {
   AlreadyBookedException,
+  ConflictException,
   InvalidParamException,
   NotFoundException,
   PastDateException,
@@ -44,6 +45,10 @@ export class NewBookDateService implements Service {
 
     if (!doesEstablishmentAttatchmentExists) {
       throw new NotFoundException('Establishment attatchment');
+    }
+
+    if (doesEstablishmentAttatchmentExists.establishment?.ownerId === userId) {
+      throw new ConflictException("An Establishment owner can't book dates on their own establishment.");
     }
 
     const doesEstablishmentAlreadyHasDateBooked = await this.bookedDatesRepository.findBookedDate({

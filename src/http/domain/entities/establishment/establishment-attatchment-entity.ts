@@ -3,4 +3,5 @@ export interface EstablishmentAttatchmentEntity {
   establishmentId?: string
   createdAt?: Date
   updatedAt?: Date
+  establishment?: { id: string, ownerId: string, name: string }
 }
