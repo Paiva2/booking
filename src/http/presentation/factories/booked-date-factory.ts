@@ -1,7 +1,7 @@
 import { UserModel } from '../../data/db';
 import { BookedDateModel } from '../../data/db/booked-date-model';
 import { EstablishmentAttatchmentModel } from '../../data/db/establishment-attatchment-model';
-import { NewBookDateService } from '../../domain/services/booked-dates/new-book-date-service';
+import { NewBookDateService } from '../../domain/services/booked-dates';
 import { NewBookDateController } from '../controllers/new-book-date/new-book-date-controller';
 import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 

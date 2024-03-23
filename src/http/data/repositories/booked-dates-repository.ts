@@ -8,4 +8,10 @@ export interface BookedDatesRepository {
   }): Promise<BookedDateEntity | null>;
 
   save(create: NewBookedDateEntity): Promise<BookedDateEntity>;
+
+  findAllFromUser(params: {
+    page: number,
+    perPage: number,
+    userId: string
+  }):Promise<{ page: number, perPage: number, list: BookedDateEntity[] }>
 }
