@@ -1,3 +1,5 @@
+import { EstablishmentAttatchmentEntity } from '..';
+
 export interface BookedDateEntity {
   id: string
   establishmentAttatchmentId: string
@@ -5,4 +7,5 @@ export interface BookedDateEntity {
   bookedDate: Date
   createdAt: Date
   updatedAt: Date
+  establishmentAttatchment?: EstablishmentAttatchmentEntity
 }

@@ -1,4 +1,4 @@
-import { EstablishmentAttatchmentEntity } from '..';
+import { EstablishmentAttatchmentEntity, UserEntity } from '..';
 import { EstablishmentTypes } from '../enums';
 
 export interface EstablishmentEntity {
@@ -16,6 +16,7 @@ export interface EstablishmentEntity {
   country: string
   complement: string
   establishmentAttatchment?: EstablishmentAttatchmentEntity
-  createdAt: Date
-  updatedAt: Date
+  createdAt?: Date
+  updatedAt?: Date
+  user?: UserEntity
 }

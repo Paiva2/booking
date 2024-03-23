@@ -9,24 +9,45 @@ export class EstablishmentAttatchmentModel implements EstablishmentAttatchmentRe
         id,
       },
       include: {
-        establishmentAttatchment: {
+        establishment: {
           select: {
             id: true,
             ownerId: true,
             name: true,
+            contact: true,
+            city: true,
+            complement: true,
+            country: true,
+            description: true,
+            neighbourhood: true,
+            number: true,
+            state: true,
+            street: true,
+            type: true,
+            zipcode: true,
           },
         },
       },
-    });
+    }) as EstablishmentAttatchmentEntity;
 
-    if (!find) return null;
+    if (!find || !find.establishment) return null;
 
     return {
       ...find,
       establishment: {
-        id: find.establishmentAttatchment.id,
-        ownerId: find.establishmentAttatchment.ownerId,
-        name: find.establishmentAttatchment.name,
+        id: find.establishment.id,
+        ownerId: find.establishment.ownerId,
+        name: find.establishment.name,
+        city: find.establishment.city,
+        complement: find.establishment.complement,
+        country: find.establishment.country,
+        description: find.establishment.description,
+        neighbourhood: find.establishment.neighbourhood,
+        number: find.establishment.number,
+        state: find.establishment.state,
+        street: find.establishment.street,
+        type: find.establishment.type,
+        zipcode: find.establishment.zipcode,
       },
     };
   }

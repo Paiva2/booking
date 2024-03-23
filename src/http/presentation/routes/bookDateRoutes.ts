@@ -16,4 +16,12 @@ export function bookDateRoutes(app: Express) {
 
     return res.status(newBookingDate.status).send(newBookingDate.data);
   });
+
+  app.get(`${prefix}/list`, [tokenVerify], async (req: Request, res: Response) => {
+    const { listBookedDatesController } = await bookdateFactory.handle();
+
+    const newBookingDate = await listBookedDatesController.handle(req);
+
+    return res.status(newBookingDate.status).send(newBookingDate.data);
+  });
 }

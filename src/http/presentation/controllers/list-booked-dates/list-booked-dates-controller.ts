@@ -17,12 +17,12 @@ export class ListBookedDatesController implements Controller {
     const parseId = this.jwtHandler.decode(req.headers?.authorization?.replaceAll('Bearer ', ''));
 
     this.dtoCheck({
-      page: req.params.page,
-      perPage: req.params.perPage,
+      page: req.query.page,
+      perPage: req.query.perPage,
       parseId,
     });
 
-    const { page, perPage } = req.params;
+    const { page, perPage } = req.query;
 
     const serviceResponse = await this.listBookedDatesService.exec({
       userId: parseId,

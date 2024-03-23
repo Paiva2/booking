@@ -86,7 +86,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      query: {
         page: '1',
         perPage: '2',
       },
@@ -107,7 +107,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      query: {
         page: '1',
         perPage: '2',
       },
@@ -128,7 +128,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      query: {
         page: '1',
         perPage: '2',
       },
@@ -138,8 +138,8 @@ describe('ListBookedDatesController', () => {
 
     expect(spySut).toHaveBeenCalledOnce();
     expect(spySut).toHaveBeenCalledWith({
-      page: requestArgs.params.page,
-      perPage: requestArgs.params.perPage,
+      page: requestArgs.query.page,
+      perPage: requestArgs.query.perPage,
       parseId: 'valid_id',
     });
   });
@@ -151,7 +151,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      query: {
         perPage: '2',
       },
     };
@@ -168,7 +168,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      query: {
         page: '1',
       },
     };
@@ -187,7 +187,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: '',
       },
-      params: {
+      query: {
         page: '1',
         perPage: '5',
       },
@@ -207,7 +207,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      query: {
         page: '1',
         perPage: '2',
       },
@@ -217,8 +217,8 @@ describe('ListBookedDatesController', () => {
 
     expect(spyService).toHaveBeenCalledOnce();
     expect(spyService).toHaveBeenCalledWith({
-      page: requestArgs.params.page,
-      perPage: requestArgs.params.perPage,
+      page: requestArgs.query.page,
+      perPage: requestArgs.query.perPage,
       userId: 'valid_id',
     });
   });
@@ -230,7 +230,7 @@ describe('ListBookedDatesController', () => {
       headers: {
         authorization: 'valid_token',
       },
-      params: {
+      query: {
         page: '1',
         perPage: '2',
       },

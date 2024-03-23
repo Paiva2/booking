@@ -73,7 +73,7 @@ model EstablishmentAttatchment {
   images      EstablishmentImage[]
   commodities Commodity[]
 
-  establishmentAttatchment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
+  establishment Establishment @relation(fields: [establishmentId], references: [id], onDelete: Cascade)
 
   @@map("tb_establishment_attatchments")
 }

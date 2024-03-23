@@ -8,7 +8,7 @@ export class UserModel implements UserRepository {
       where: {
         email,
       },
-    });
+    }) as UserEntity | null;
 
     return find;
   }
@@ -28,7 +28,7 @@ export class UserModel implements UserRepository {
         state: user.address.state,
         zipcode: user.address.zipcode,
       },
-    });
+    }) as UserEntity;
 
     return createUser;
   }
@@ -38,7 +38,7 @@ export class UserModel implements UserRepository {
       where: {
         id,
       },
-    });
+    }) as UserEntity | null;
 
     return find;
   }
@@ -53,7 +53,7 @@ export class UserModel implements UserRepository {
         id: userId,
       },
       data: { ...userUpdateFields },
-    });
+    }) as UserEntity;
 
     return updateUser;
   }
