@@ -20,4 +20,6 @@ export interface EstablishmentRepository {
     perPage: number,
     list: EstablishmentEntity[]
   }>
+
+  findById(id: string): Promise<EstablishmentEntity | null>
 }
