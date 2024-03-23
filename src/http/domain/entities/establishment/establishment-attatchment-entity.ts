@@ -1,4 +1,6 @@
-import { CommodityEntity, EstablishmentEntity, EstablishmentImageEntity } from '..';
+import {
+  BookedDateEntity, CommodityEntity, EstablishmentEntity, EstablishmentImageEntity,
+} from '..';
 
 export interface EstablishmentAttatchmentEntity {
   id: string
@@ -6,6 +8,7 @@ export interface EstablishmentAttatchmentEntity {
   createdAt?: Date
   updatedAt?: Date
   establishment?: Omit<EstablishmentEntity, 'establishmentAttatchment'>
-  images?: EstablishmentImageEntity[]
-  commodities?: CommodityEntity[]
+  commodities?: Pick<CommodityEntity, 'id' | 'name' | 'commodityIconUrl'>[]
+  images?: Pick<EstablishmentImageEntity, 'id' | 'url'>[]
+  bookedDates?: Pick<BookedDateEntity, 'id' | 'userId' | 'bookedDate' | 'establishmentAttatchmentId'>[]
 }

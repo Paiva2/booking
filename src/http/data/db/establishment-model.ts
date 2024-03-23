@@ -135,6 +135,19 @@ export class EstablishmentModel implements EstablishmentRepository {
           select: {
             id: true,
             establishmentId: true,
+            commodities: {
+              select: {
+                id: true,
+                name: true,
+                commodityIconUrl: true,
+              },
+            },
+            images: {
+              select: {
+                id: true,
+                url: true,
+              },
+            },
           },
         },
       },
