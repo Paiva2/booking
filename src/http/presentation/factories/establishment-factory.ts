@@ -1,5 +1,4 @@
-import { UserModel } from '../../data/db';
-import { EstablishmentModel } from '../../data/db/establishment-model';
+import { EstablishmentModel, UserModel } from '../../data/db';
 import { ListEstablishmentService, RegisterEstablishmentService } from '../../domain/services/establishment';
 import { ListEstablishmentController } from '../controllers/list-establishments/list-establishments-controller';
 import { RegisterEstablishmentController } from '../controllers/register-establishment/register-establishment-controller';
