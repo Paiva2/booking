@@ -114,9 +114,9 @@ export class EstablishmentModel implements EstablishmentRepository {
     const list = await prisma.establishment.findMany({
       where: hasFilters ? {
         OR: [
-          query.name ? { name: { contains: query.name } } : {},
-          query.city ? { city: { contains: query.city } } : {},
-          query.state ? { state: { contains: query.state } } : {},
+          query.name ? { name: { contains: query.name, mode: 'insensitive' } } : {},
+          query.city ? { city: { contains: query.city, mode: 'insensitive' } } : {},
+          query.state ? { state: { contains: query.state, mode: 'insensitive' } } : {},
         ],
       } : {},
       include: {
@@ -211,5 +211,76 @@ export class EstablishmentModel implements EstablishmentRepository {
     }) as EstablishmentEntity;
 
     return find;
+  }
+
+  public async findAllByUserId(params: {
+    userId: string;
+    page: number;
+    perPage: number;
+    orderBy: 'asc' | 'desc';
+    name?: string | undefined;
+  }): Promise<{ page: number; perPage: number; list: EstablishmentEntity[]; }> {
+    const {
+      page,
+      perPage,
+      userId,
+      orderBy,
+    } = params;
+
+    const findAll = await prisma.establishment.findMany({
+      where: {
+        ownerId: userId,
+        AND: {
+          name: params.name ? { contains: params.name, mode: 'insensitive' } : {},
+        },
+      },
+      include: {
+        establishmentAttatchment: {
+          select: {
+            id: true,
+            establishmentId: true,
+            createdAt: true,
+            updatedAt: true,
+            images: {
+              select: {
+                id: true,
+                url: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            commodities: {
+              select: {
+                id: true,
+                name: true,
+                commodityIconUrl: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            bookedDates: {
+              select: {
+                id: true,
+                bookedDate: true,
+                userId: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        createdAt: orderBy,
+      },
+      skip: (page - 1) * perPage,
+      take: perPage,
+    }) as EstablishmentEntity[];
+
+    return {
+      page,
+      perPage: params.perPage,
+      list: findAll,
+    };
   }
 }

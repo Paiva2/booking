@@ -42,4 +42,16 @@ export default function establishmentRoutes(app: Express) {
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
+
+  app.get(
+    `${prefix}/list/own`,
+    [tokenVerify],
+    async (req: Request, res: Response) => {
+      const { listOwnEstablishmentsController } = await establishmentFactory.handle();
+
+      const controllerResponse = await listOwnEstablishmentsController.handle(req);
+
+      return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
+    },
+  );
 }

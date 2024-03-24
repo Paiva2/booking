@@ -1,7 +1,9 @@
 import { EstablishmentModel, UserModel } from '../../data/db';
 import { FilterEstablishmentService, ListEstablishmentService, RegisterEstablishmentService } from '../../domain/services/establishment';
+import { ListOwnEstablishmentsService } from '../../domain/services/establishment/list-own-establishments-service/list-own-establishments-service';
 import { FilterEstablishmentController } from '../controllers/filter-establishment/filter-establishment-controller';
 import { ListEstablishmentController } from '../controllers/list-establishments/list-establishments-controller';
+import { ListOwnEstablishmentsController } from '../controllers/list-own-establishments/list-own-establishments-controller';
 import { RegisterEstablishmentController } from '../controllers/register-establishment/register-establishment-controller';
 import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 
@@ -12,6 +14,7 @@ export class EstablishmentFactory {
       registerEstablishmentService,
       listEstablishmentService,
       filterEstablishmentService,
+      listOwnEstablishmentsService,
     } = await this.services();
 
     const registerEstablishmentController = new RegisterEstablishmentController(
@@ -25,10 +28,16 @@ export class EstablishmentFactory {
       filterEstablishmentService,
     );
 
+    const listOwnEstablishmentsController = new ListOwnEstablishmentsController(
+      listOwnEstablishmentsService,
+      jwtHandler,
+    );
+
     return {
       registerEstablishmentController,
       listEstablishmentController,
       filterEstablishmentController,
+      listOwnEstablishmentsController,
     };
   }
 
@@ -44,10 +53,16 @@ export class EstablishmentFactory {
 
     const filterEstablishmentService = new FilterEstablishmentService(establishmentModel);
 
+    const listOwnEstablishmentsService = new ListOwnEstablishmentsService(
+      userModel,
+      establishmentModel,
+    );
+
     return {
       registerEstablishmentService,
       listEstablishmentService,
       filterEstablishmentService,
+      listOwnEstablishmentsService,
     };
   }
 
