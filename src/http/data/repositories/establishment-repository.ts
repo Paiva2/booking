@@ -3,11 +3,13 @@ import { EstablishmentEntity, RegisterEstablishmentEntity } from '../../domain/e
 export interface EstablishmentRepository {
   save(dto: {
     userId: string,
-    establishment: RegisterEstablishmentEntity }): Promise<EstablishmentEntity>;
+    establishment: RegisterEstablishmentEntity
+  }): Promise<EstablishmentEntity>;
 
   findByName(dto: {
     userId: string,
-    name: string }): Promise<EstablishmentEntity | null>
+    name: string
+  }): Promise<EstablishmentEntity | null>
 
   find(query: {
     page: number,
@@ -15,11 +17,23 @@ export interface EstablishmentRepository {
     name?: string,
     state?: string,
     city?: string,
-  }):Promise<{
+  }): Promise<{
     page: number,
     perPage: number,
     list: EstablishmentEntity[]
   }>
 
   findById(id: string): Promise<EstablishmentEntity | null>
+
+  findAllByUserId(params: {
+    userId: string,
+    page: number,
+    perPage: number,
+    orderBy: 'asc' | 'desc'
+    name?: string,
+  }): Promise<{
+    page: number,
+    perPage: number,
+    list: EstablishmentEntity[]
+  }>
 }

@@ -26,6 +26,15 @@ const makeEstablishmentRepositoryStub = () => {
   };
 
   class EstablishmentRepositoryStub implements EstablishmentRepository {
+    findAllByUserId(params: { userId: string;
+      page: number;
+      perPage: number;
+      orderBy: 'asc' | 'desc';
+      name?: string | undefined;
+    }): Promise<{ page: number; perPage: number; list: EstablishmentEntity[]; }> {
+      throw new Error('Method not implemented.');
+    }
+
     async findById(id: string): Promise<EstablishmentEntity | null> {
       throw new Error('Method not implemented.');
     }
