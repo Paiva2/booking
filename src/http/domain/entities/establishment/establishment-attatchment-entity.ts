@@ -10,5 +10,5 @@ export interface EstablishmentAttatchmentEntity {
   establishment?: Omit<EstablishmentEntity, 'establishmentAttatchment'>
   commodities?: Pick<CommodityEntity, 'id' | 'name' | 'commodityIconUrl'>[]
   images?: Pick<EstablishmentImageEntity, 'id' | 'url'>[]
-  bookedDates?: Pick<BookedDateEntity, 'id' | 'userId' | 'bookedDate' | 'establishmentAttatchmentId'>[]
+  bookedDates?: Pick<BookedDateEntity, 'id' | 'userId' | 'bookedDate'>[]
 }

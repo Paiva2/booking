@@ -101,7 +101,7 @@ export class EstablishmentModel implements EstablishmentRepository {
     return find;
   }
 
-  async find(query: {
+  public async find(query: {
     page: number;
     perPage: number;
     name?: string | undefined;
@@ -119,9 +119,6 @@ export class EstablishmentModel implements EstablishmentRepository {
           query.state ? { state: { contains: query.state } } : {},
         ],
       } : {},
-      orderBy: {
-        createdAt: 'desc',
-      },
       include: {
         user: {
           select: {
@@ -153,6 +150,9 @@ export class EstablishmentModel implements EstablishmentRepository {
       },
       skip: (query.page - 1) * query.perPage,
       take: query.perPage,
+      orderBy: {
+        createdAt: 'desc',
+      },
     }) as EstablishmentEntity[];
 
     return {
@@ -160,5 +160,56 @@ export class EstablishmentModel implements EstablishmentRepository {
       perPage: query.perPage,
       list,
     };
+  }
+
+  public async findById(id: string): Promise<EstablishmentEntity | null> {
+    const find = await prisma.establishment.findFirst({
+      where: {
+        id,
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            contact: true,
+          },
+        },
+        establishmentAttatchment: {
+          select: {
+            id: true,
+            establishmentId: true,
+            images: {
+              select: {
+                id: true,
+                url: true,
+              },
+            },
+            commodities: {
+              select: {
+                id: true,
+                name: true,
+                commodityIconUrl: true,
+              },
+            },
+            bookedDates: {
+              select: {
+                id: true,
+                bookedDate: true,
+                userId: true,
+              },
+              where: {
+                bookedDate: {
+                  gte: new Date().toISOString(),
+                },
+              },
+            },
+          },
+        },
+      },
+    }) as EstablishmentEntity;
+
+    return find;
   }
 }

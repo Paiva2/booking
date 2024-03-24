@@ -31,4 +31,15 @@ export default function establishmentRoutes(app: Express) {
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
+
+  app.get(
+    `${prefix}/:establishmentId`,
+    async (req: Request, res: Response) => {
+      const { filterEstablishmentController } = await establishmentFactory.handle();
+
+      const controllerResponse = await filterEstablishmentController.handle(req);
+
+      return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
+    },
+  );
 }

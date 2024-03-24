@@ -1,5 +1,6 @@
 import { EstablishmentModel, UserModel } from '../../data/db';
-import { ListEstablishmentService, RegisterEstablishmentService } from '../../domain/services/establishment';
+import { FilterEstablishmentService, ListEstablishmentService, RegisterEstablishmentService } from '../../domain/services/establishment';
+import { FilterEstablishmentController } from '../controllers/filter-establishment/filter-establishment-controller';
 import { ListEstablishmentController } from '../controllers/list-establishments/list-establishments-controller';
 import { RegisterEstablishmentController } from '../controllers/register-establishment/register-establishment-controller';
 import { JwtHandlerAdapter } from '../utils/jwt-adapter';
@@ -7,7 +8,11 @@ import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 export class EstablishmentFactory {
   public async handle() {
     const { jwtHandler } = this.presentationProtocols();
-    const { registerEstablishmentService, listEstablishmentService } = await this.services();
+    const {
+      registerEstablishmentService,
+      listEstablishmentService,
+      filterEstablishmentService,
+    } = await this.services();
 
     const registerEstablishmentController = new RegisterEstablishmentController(
       registerEstablishmentService,
@@ -16,9 +21,14 @@ export class EstablishmentFactory {
 
     const listEstablishmentController = new ListEstablishmentController(listEstablishmentService);
 
+    const filterEstablishmentController = new FilterEstablishmentController(
+      filterEstablishmentService,
+    );
+
     return {
       registerEstablishmentController,
       listEstablishmentController,
+      filterEstablishmentController,
     };
   }
 
@@ -32,9 +42,12 @@ export class EstablishmentFactory {
 
     const listEstablishmentService = new ListEstablishmentService(establishmentModel);
 
+    const filterEstablishmentService = new FilterEstablishmentService(establishmentModel);
+
     return {
       registerEstablishmentService,
       listEstablishmentService,
+      filterEstablishmentService,
     };
   }
 
