@@ -1,3 +1,4 @@
+import multer from 'multer';
 import { NextFunction, Request, Response } from 'express';
 import { GlobalException } from '../exceptions/global-exception';
 
@@ -7,6 +8,10 @@ export function globalErrorHandler(
   res:Response,
   next: NextFunction,
 ) {
+  if (error instanceof multer.MulterError) {
+    return res.status(400).send(`Error uploading file: ${error.message}`);
+  }
+
   if (error instanceof GlobalException) {
     const status = error.status ? error.status : 500;
 

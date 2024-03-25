@@ -26,5 +26,6 @@ module.exports = {
     'no-console': 'off',
     'consistent-return': 'off',
     'import/no-cycle': 'off',
+    'no-unsafe-optional-chaining': 'off'
   },
 };
