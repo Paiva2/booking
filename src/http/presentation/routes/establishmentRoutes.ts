@@ -3,6 +3,7 @@ import { EstablishmentFactory } from '../factories/establishment-factory';
 import { registerEstablishmentDTO } from '../dto-schemas';
 import { zodDto } from '../middlewares';
 import tokenVerify from '../middlewares/token-verify';
+import { upload } from '../../../app';
 
 const establishmentFactory = new EstablishmentFactory();
 
@@ -31,4 +32,10 @@ export default function establishmentRoutes(app: Express) {
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
+
+  app.post(`${prefix}/images`, upload.array('images', 15), (req: Request, res: Response) => {
+    console.log(req.files);
+
+    res.status(200).send();
+  });
 }
