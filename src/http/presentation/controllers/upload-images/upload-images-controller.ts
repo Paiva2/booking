@@ -14,7 +14,7 @@ export class UploadImagesController implements Controller {
 
     this.dtoCheck(args);
 
-    if (args.iconMapper && args.query === 'commodity') {
+    if (args.iconMapper && args.query.type === 'commodity') {
       args.iconMapper = JSON.parse(args.iconMapper)
         .map((icon: { idx: string, name: string }) => ({
           idx: Number(icon.idx),
