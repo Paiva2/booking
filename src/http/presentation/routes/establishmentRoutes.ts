@@ -57,7 +57,6 @@ export default function establishmentRoutes(app: Express) {
     },
   );
 
-  // TODO: MOVE TO CONTROLLER AND MAKE VARIATIONS FOR: PROFILE PIC, ESTABLISHMENT IMAGES AND COMMODITIES ICONS
   app.post(
     `${prefix}/images`,
     [upload.array('images', 15)],
@@ -95,6 +94,10 @@ export default function establishmentRoutes(app: Express) {
             urls.push({
               name: iconName,
               iconUrl: uploadResponse,
+            });
+          } else {
+            urls.push({
+              url: uploadResponse,
             });
           }
         } catch (error) {
