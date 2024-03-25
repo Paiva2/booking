@@ -1,6 +1,4 @@
-import { UserModel } from '../../data/db';
-import { BookedDateModel } from '../../data/db/booked-date-model';
-import { EstablishmentAttatchmentModel } from '../../data/db/establishment-attatchment-model';
+import { BookedDateModel, EstablishmentAttatchmentModel, UserModel } from '../../data/db';
 import { ListBookedDatesService, NewBookDateService } from '../../domain/services/booked-dates';
 import { ListBookedDatesController } from '../controllers/list-booked-dates/list-booked-dates-controller';
 import { NewBookDateController } from '../controllers/new-book-date/new-book-date-controller';

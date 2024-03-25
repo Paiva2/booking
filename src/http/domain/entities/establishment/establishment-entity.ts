@@ -1,4 +1,6 @@
-import { EstablishmentAttatchmentEntity, UserEntity } from '..';
+import {
+  CommodityEntity, EstablishmentAttatchmentEntity, EstablishmentImageEntity, UserEntity,
+} from '..';
 import { EstablishmentTypes } from '../enums';
 
 export interface EstablishmentEntity {
@@ -18,5 +20,5 @@ export interface EstablishmentEntity {
   establishmentAttatchment?: EstablishmentAttatchmentEntity
   createdAt?: Date
   updatedAt?: Date
-  user?: UserEntity
+  user?: Pick<UserEntity, 'id' | 'email' | 'name' | 'contact'>
 }

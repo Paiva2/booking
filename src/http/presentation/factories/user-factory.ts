@@ -1,7 +1,4 @@
 import { UserModel } from '../../data/db';
-import {
-  AuthUserService, ForgotUserPasswordService, RegisterUserService, UpdateUserService,
-} from '../../domain/services/user';
 import { EmailSenderAdapter, EncrypterAdapter } from '../../domain/utils';
 import { AuthUserController } from '../controllers/auth-user/auth-user-controller';
 import { ForgotUserPasswordController } from '../controllers/forgot-user-password/forgot-user-password-controller';
@@ -9,6 +6,12 @@ import { GetUserProfileController } from '../controllers/get-user-profile/get-us
 import { RegisterUserController } from '../controllers/register-user/register-user-controller';
 import { UpdateUserProfileController } from '../controllers/update-user-profile/update-user-profile-controller';
 import { JwtHandlerAdapter } from '../utils/jwt-adapter';
+import {
+  AuthUserService,
+  ForgotUserPasswordService,
+  RegisterUserService,
+  UpdateUserService,
+} from '../../domain/services/user';
 
 export class UserFactory {
   public async handle() {
