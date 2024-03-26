@@ -160,6 +160,43 @@ describe('UploadImagesService', () => {
     ]);
   });
 
+  test('Should throw exception if iconMapper is provided but type is diff from commodity', async () => {
+    const { sut } = sutFactory;
+
+    const args = {
+      files: [{
+        fieldname: 'valid_fieldname',
+        originalname: 'valid_originalname',
+        encoding: 'valid_encoding',
+        mimetype: 'valid_mimetype',
+        size: 100,
+        destination: 'valid_destination',
+        filename: 'valid_filename1',
+        path: 'valid_path',
+        buffer: Buffer.from('valid_buffer'),
+      },
+      {
+        fieldname: 'valid_fieldname',
+        originalname: 'valid_originalname',
+        encoding: 'valid_encoding',
+        mimetype: 'valid_mimetype',
+        size: 100,
+        destination: 'valid_destination',
+        filename: 'valid_filename2',
+        path: 'valid_path',
+        buffer: Buffer.from('valid_buffer'),
+      }],
+      query: {
+        type: 'normal',
+      },
+      iconMapper: [{ idx: 0, name: 'icon1' }, { idx: 1, name: 'icon2' }],
+    };
+
+    const expectedException = new InvalidParamException('iconMapper must be provided with query type commodity');
+
+    await expect(() => sut.exec(args)).rejects.toStrictEqual(expectedException);
+  });
+
   test('Should return url created from all files provided - WITH COMMODITY AND ICONMAPPER', async () => {
     const { sut } = sutFactory;
 
