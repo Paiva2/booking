@@ -8,7 +8,7 @@ const prefix = '/api/v1/booking';
 
 const bookdateFactory = new BookedDateFactory();
 
-export function bookDateRoutes(app: Express) {
+export default function bookDateRoutes(app: Express) {
   app.post(`${prefix}/new`, [tokenVerify, zodDto(newBookDateDTO)], async (req: Request, res: Response) => {
     const { newBookDateController } = await bookdateFactory.handle();
 

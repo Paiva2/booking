@@ -9,9 +9,16 @@ export class UploadImagesAdapter implements ImageHandler {
     fileBuffer: Buffer;
     mimeType: string;
   }): Promise<{ url: string; }> {
+    const getFileType = params.mimeType.split('/')[1];
+
+    const makeFileName = `
+      ${params.fileName.replaceAll('.jpeg', '').replaceAll('.jpg', '').replaceAll('.png', '')}
+      _${new Date().getTime()}.${getFileType}
+    `;
+
     const awsParams = {
       Bucket: this.imagesDestination,
-      Key: params.fileName,
+      Key: makeFileName,
       Body: params.fileBuffer,
       ContentType: params.mimeType,
     };

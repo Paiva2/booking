@@ -32,6 +32,10 @@ export class UploadImagesService implements Service {
   }): Promise<UrlUploadResponse> {
     const hasIconsAndUrl = query.type === 'commodity' && iconMapper;
 
+    if (iconMapper && query.type !== 'commodity') {
+      throw new InvalidParamException('iconMapper must be provided with query type commodity');
+    }
+
     if (hasIconsAndUrl) {
       if (files.length !== iconMapper.length) {
         throw new InvalidParamException('iconMapper and files length');
