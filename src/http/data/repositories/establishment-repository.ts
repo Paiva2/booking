@@ -1,4 +1,5 @@
 import { EstablishmentEntity, RegisterEstablishmentEntity } from '../../domain/entities';
+import { UpdateEstablishmentEntity } from '../../domain/entities/establishment/update-establishment-entity';
 
 export interface EstablishmentRepository {
   save(dto: {
@@ -36,4 +37,7 @@ export interface EstablishmentRepository {
     perPage: number,
     list: EstablishmentEntity[]
   }>
+
+  update(dto: { ownerId: string, args: UpdateEstablishmentEntity }): Promise<EstablishmentEntity>
+
 }

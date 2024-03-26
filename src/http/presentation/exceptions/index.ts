@@ -6,3 +6,4 @@ export * from './wrong-credentials-exception';
 export * from './past-date-exception';
 export * from './already-booked-exception';
 export * from './conflict-exception';
+export * from './forbidden-exception';

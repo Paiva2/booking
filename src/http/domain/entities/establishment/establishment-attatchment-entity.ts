@@ -7,6 +7,8 @@ export interface EstablishmentAttatchmentEntity {
   establishmentId?: string
   createdAt?: Date
   updatedAt?: Date
+  maxBookingHour: string
+  minBookingHour: string
   establishment?: Omit<EstablishmentEntity, 'establishmentAttatchment'>
   commodities?: Pick<CommodityEntity, 'id' | 'name' | 'commodityIconUrl'>[]
   images?: Pick<EstablishmentImageEntity, 'id' | 'url'>[]

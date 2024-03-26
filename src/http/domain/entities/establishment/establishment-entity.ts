@@ -1,6 +1,4 @@
-import {
-  CommodityEntity, EstablishmentAttatchmentEntity, EstablishmentImageEntity, UserEntity,
-} from '..';
+import { EstablishmentAttatchmentEntity, UserEntity } from '..';
 import { EstablishmentTypes } from '../enums';
 
 export interface EstablishmentEntity {

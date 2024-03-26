@@ -132,6 +132,8 @@ export class EstablishmentModel implements EstablishmentRepository {
           select: {
             id: true,
             establishmentId: true,
+            maxBookingHour: true,
+            minBookingHour: true,
             commodities: {
               select: {
                 id: true,
@@ -180,6 +182,8 @@ export class EstablishmentModel implements EstablishmentRepository {
           select: {
             id: true,
             establishmentId: true,
+            maxBookingHour: true,
+            minBookingHour: true,
             images: {
               select: {
                 id: true,
@@ -241,6 +245,8 @@ export class EstablishmentModel implements EstablishmentRepository {
             establishmentId: true,
             createdAt: true,
             updatedAt: true,
+            maxBookingHour: true,
+            minBookingHour: true,
             images: {
               select: {
                 id: true,
