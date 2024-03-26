@@ -1,3 +1,4 @@
+import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { s3 } from '../../../config/aws';
 import { ImageHandler } from '../../domain/protocols';
 
@@ -11,10 +12,7 @@ export class UploadImagesAdapter implements ImageHandler {
   }): Promise<{ url: string; }> {
     const getFileType = params.mimeType.split('/')[1];
 
-    const makeFileName = `
-      ${params.fileName.replaceAll('.jpeg', '').replaceAll('.jpg', '').replaceAll('.png', '')}
-      _${new Date().getTime()}.${getFileType}
-    `;
+    const makeFileName = `${params.fileName.replaceAll('.jpeg', '').replaceAll('.jpg', '').replaceAll('.png', '')}_${new Date().getTime()}.${getFileType}`;
 
     const awsParams = {
       Bucket: this.imagesDestination,
@@ -26,9 +24,9 @@ export class UploadImagesAdapter implements ImageHandler {
     let urlParam = '';
 
     try {
-      const uploadResponse = await s3.upload(awsParams).promise();
+      await s3.send(new PutObjectCommand(awsParams));
 
-      urlParam = uploadResponse.Location;
+      urlParam = `https://${this.imagesDestination}.s3.us-east-1.amazonaws.com/${makeFileName}`;
     } catch (e) {
       console.log(e);
       if (e instanceof Error) {
