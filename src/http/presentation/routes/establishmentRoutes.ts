@@ -54,4 +54,12 @@ export default function establishmentRoutes(app: Express) {
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
+
+  app.patch(
+    `${prefix}/update`,
+    [tokenVerify],
+    async (req: Request, res: Response) => {
+
+    },
+  );
 }

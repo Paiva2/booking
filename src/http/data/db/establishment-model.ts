@@ -1,6 +1,8 @@
+import { Prisma } from '@prisma/client';
 import prisma from '../lib/prisma';
 import { RegisterEstablishmentEntity, EstablishmentEntity } from '../../domain/entities';
 import { EstablishmentRepository } from '../repositories';
+import { UpdateEstablishmentEntity } from '../../domain/entities/establishment/update-establishment-entity';
 
 interface ImageCreationSchema {
   url:string
@@ -15,73 +17,62 @@ export class EstablishmentModel implements EstablishmentRepository {
   public async save({ establishment, userId }: {
     userId: string,
     establishment: RegisterEstablishmentEntity }): Promise<EstablishmentEntity> {
-    let createEstablishment = {} as EstablishmentEntity;
+    let images: ImageCreationSchema[] = [];
+    let commodities: CommodityCreationSchema[] = [];
 
-    await prisma.$transaction(async (prismaHandler) => {
-      try {
-        let images = [] as ImageCreationSchema[];
-        let commodities = [] as CommodityCreationSchema[];
+    if (establishment.images?.length) {
+      images = establishment.images.map((image) => ({
+        url: image,
+      }));
+    }
 
-        if (establishment.images?.length) {
-          images = establishment.images.map((image) => ({
-            url: image,
-          }));
-        }
+    if (establishment.commodities?.length) {
+      commodities = establishment.commodities.map((commodity) => ({
+        name: commodity.name,
+        commodityIconUrl: commodity.iconUrl,
+      }));
+    }
 
-        if (establishment.commodities?.length) {
-          commodities = establishment.commodities.map((commodity) => ({
-            name: commodity.name,
-            commodityIconUrl: commodity.iconUrl,
-          }));
-        }
+    const createEstablishment = await prisma.establishment.create({
+      data: {
+        ownerId: userId,
+        city: establishment.city,
+        contact: establishment.contact,
+        country: establishment.country,
+        description: establishment.description,
+        name: establishment.name,
+        neighbourhood: establishment.neighbourhood,
+        number: establishment.number,
+        state: establishment.state,
+        street: establishment.street,
+        type: establishment.type,
+        zipcode: establishment.zipcode,
+        complement: establishment.complement,
 
-        createEstablishment = await prismaHandler.establishment.create({
-          data: {
-            ownerId: userId,
-            city: establishment.city,
-            contact: establishment.contact,
-            country: establishment.country,
-            description: establishment.description,
-            name: establishment.name,
-            neighbourhood: establishment.neighbourhood,
-            number: establishment.number,
-            state: establishment.state,
-            street: establishment.street,
-            type: establishment.type,
-            zipcode: establishment.zipcode,
-            complement: establishment.complement,
+        establishmentAttatchment: {
+          create: {
+            maxBookingHour: establishment.maxBookingHour,
+            minBookingHour: establishment.minBookingHour,
 
-            establishmentAttatchment: {
-              create: {
-                maxBookingHour: establishment.maxBookingHour,
-                minBookingHour: establishment.minBookingHour,
+            commodities: {
+              createMany: {
+                data: commodities,
+              },
+            },
 
-                commodities: {
-                  createMany: {
-                    data: commodities,
-                  },
-                },
-
-                images: {
-                  createMany: {
-                    data: images,
-                  },
-                },
+            images: {
+              createMany: {
+                data: images,
               },
             },
           },
+        },
+      },
 
-          include: {
-            establishmentAttatchment: true,
-          },
-        }) as EstablishmentEntity;
-
-        return createEstablishment;
-      } catch (e) {
-        console.log(e);
-        throw e;
-      }
-    });
+      include: {
+        establishmentAttatchment: true,
+      },
+    }) as EstablishmentEntity;
 
     return createEstablishment;
   }
@@ -288,5 +279,91 @@ export class EstablishmentModel implements EstablishmentRepository {
       perPage: params.perPage,
       list: findAll,
     };
+  }
+
+  public async update(dto: {
+    ownerId: string;
+    args: UpdateEstablishmentEntity;
+  }): Promise<EstablishmentEntity> {
+    const attatchmentFields = [
+      'maxBookingHour',
+      'minBookingHour',
+      'images',
+      'commodities',
+    ];
+
+    const fieldsToUpdate = Object.entries(dto.args);
+
+    const fieldsToUpdateEstablishment = fieldsToUpdate.filter(
+      ([key]) => !attatchmentFields.includes(key) || key === 'id',
+    );
+
+    const updateEstablishment = {} as UpdateEstablishmentEntity;
+
+    for (const [key, value] of fieldsToUpdateEstablishment) {
+      updateEstablishment[key as keyof typeof dto.args] = value;
+    }
+
+    const findAndUpdate = await prisma.establishment.update({
+      where: {
+        id: dto.args.id,
+        AND: {
+          ownerId: dto.ownerId,
+        },
+      },
+      data: {
+        ...updateEstablishment,
+        establishmentAttatchment: {
+          update: {
+            commodities: dto.args.commodities as
+            Prisma.CommodityUpdateManyWithoutEstablishmentAttatchmentNestedInput || undefined,
+            maxBookingHour: dto.args.maxBookingHour || undefined,
+            minBookingHour: dto.args.minBookingHour || undefined,
+            images: dto.args.images as
+            Prisma.EstablishmentImageUpdateManyWithoutEstablishmentInfoNestedInput || undefined,
+          },
+        },
+      },
+      include: {
+        establishmentAttatchment: {
+          select: {
+            id: true,
+            establishmentId: true,
+            createdAt: true,
+            updatedAt: true,
+            maxBookingHour: true,
+            minBookingHour: true,
+            images: {
+              select: {
+                id: true,
+                url: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            commodities: {
+              select: {
+                id: true,
+                name: true,
+                commodityIconUrl: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+            bookedDates: {
+              select: {
+                id: true,
+                bookedDate: true,
+                userId: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
+    }) as EstablishmentEntity;
+
+    return findAndUpdate;
   }
 }
