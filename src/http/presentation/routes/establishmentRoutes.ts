@@ -1,6 +1,6 @@
 import { Request, Response, Express } from 'express';
 import { EstablishmentFactory } from '../factories/establishment-factory';
-import { registerEstablishmentDTO } from '../dto-schemas';
+import { registerEstablishmentDTO, updateEstablishmentDTO } from '../dto-schemas';
 import { zodDto } from '../middlewares';
 import tokenVerify from '../middlewares/token-verify';
 
@@ -56,10 +56,14 @@ export default function establishmentRoutes(app: Express) {
   );
 
   app.patch(
-    `${prefix}/update`,
-    [tokenVerify],
+    `${prefix}/update/:establishmentId`,
+    [tokenVerify, zodDto(updateEstablishmentDTO)],
     async (req: Request, res: Response) => {
+      const { updateEstablishmentController } = await establishmentFactory.handle();
 
+      const controllerResponse = await updateEstablishmentController.handle(req);
+
+      return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
   );
 }

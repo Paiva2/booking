@@ -19,7 +19,7 @@ export class UpdateEstablishmentController implements Controller {
 
     const updatedEstablishment = await this.updateEstablishmentService.exec({
       ownerId: parseUserId,
-      update: req.body,
+      update: { ...req.body, id: req.params.establishmentId },
     });
 
     return {

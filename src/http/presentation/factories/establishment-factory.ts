@@ -1,10 +1,16 @@
-import { EstablishmentModel, UserModel } from '../../data/db';
-import { FilterEstablishmentService, ListEstablishmentService, RegisterEstablishmentService } from '../../domain/services/establishment';
+import { EstablishmentAttatchmentModel, EstablishmentModel, UserModel } from '../../data/db';
+import {
+  FilterEstablishmentService,
+  ListEstablishmentService,
+  RegisterEstablishmentService,
+  UpdateEstablishmentService,
+} from '../../domain/services/establishment';
 import { ListOwnEstablishmentsService } from '../../domain/services/establishment/list-own-establishments-service/list-own-establishments-service';
 import { FilterEstablishmentController } from '../controllers/filter-establishment/filter-establishment-controller';
 import { ListEstablishmentController } from '../controllers/list-establishments/list-establishments-controller';
 import { ListOwnEstablishmentsController } from '../controllers/list-own-establishments/list-own-establishments-controller';
 import { RegisterEstablishmentController } from '../controllers/register-establishment/register-establishment-controller';
+import { UpdateEstablishmentController } from '../controllers/update-establishment/update-establishment-controller';
 import { JwtHandlerAdapter } from '../utils/jwt-adapter';
 
 export class EstablishmentFactory {
@@ -15,6 +21,7 @@ export class EstablishmentFactory {
       listEstablishmentService,
       filterEstablishmentService,
       listOwnEstablishmentsService,
+      updateEstablishmentService,
     } = await this.services();
 
     const registerEstablishmentController = new RegisterEstablishmentController(
@@ -33,16 +40,22 @@ export class EstablishmentFactory {
       jwtHandler,
     );
 
+    const updateEstablishmentController = new UpdateEstablishmentController(
+      updateEstablishmentService,
+      jwtHandler,
+    );
+
     return {
       registerEstablishmentController,
       listEstablishmentController,
       filterEstablishmentController,
       listOwnEstablishmentsController,
+      updateEstablishmentController,
     };
   }
 
   private async services() {
-    const { establishmentModel, userModel } = this.models();
+    const { establishmentModel, userModel, establishmentAttatchmentModel } = this.models();
 
     const registerEstablishmentService = new RegisterEstablishmentService(
       userModel,
@@ -58,21 +71,29 @@ export class EstablishmentFactory {
       establishmentModel,
     );
 
+    const updateEstablishmentService = new UpdateEstablishmentService(
+      establishmentModel,
+      establishmentAttatchmentModel,
+    );
+
     return {
       registerEstablishmentService,
       listEstablishmentService,
       filterEstablishmentService,
       listOwnEstablishmentsService,
+      updateEstablishmentService,
     };
   }
 
   private models() {
     const userModel = new UserModel();
     const establishmentModel = new EstablishmentModel();
+    const establishmentAttatchmentModel = new EstablishmentAttatchmentModel();
 
     return {
       userModel,
       establishmentModel,
+      establishmentAttatchmentModel,
     };
   }
 
