@@ -37,7 +37,7 @@ export class UpdateEstablishmentService implements Service {
     }
 
     const doesEstablishmentAttatchmentExists = await this.establishmentAttatchmentRepository
-      .findById(update.id);
+      .findByEstablishmentId(update.id);
 
     if (!doesEstablishmentAttatchmentExists) {
       throw new NotFoundException('Establishment Attatchment');
@@ -48,9 +48,7 @@ export class UpdateEstablishmentService implements Service {
         maxBookingHour: update.maxBookingHour,
         minBookingHour: update.minBookingHour,
       });
-    }
-
-    if (update.maxBookingHour) {
+    } else if (update.maxBookingHour) {
       this.validateMaxAndMinHour({
         maxBookingHour: update.maxBookingHour,
         minBookingHour: doesEstablishmentAttatchmentExists.minBookingHour,

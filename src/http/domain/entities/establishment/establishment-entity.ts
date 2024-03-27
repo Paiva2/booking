@@ -8,6 +8,7 @@ export interface EstablishmentEntity {
   description: string
   ownerId: string
   street: string,
+  contact: string
   neighbourhood: string
   zipcode: string
   number: string
