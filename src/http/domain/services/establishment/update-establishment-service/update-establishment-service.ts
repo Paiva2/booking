@@ -60,6 +60,12 @@ export class UpdateEstablishmentService implements Service {
       });
     }
 
+    const doesEstablishmentExists = await this.establishmentRepository.findById(update.id);
+
+    if (!doesEstablishmentExists) {
+      throw new NotFoundException('Establishment');
+    }
+
     if (update.name) {
       const doesUserAlreadyHasEstablishmentName = await this.establishmentRepository.findByName({
         userId: ownerId,
@@ -67,17 +73,15 @@ export class UpdateEstablishmentService implements Service {
       });
 
       if (doesUserAlreadyHasEstablishmentName) {
-        throw new AlreadyExistsException('An Establishment with this name');
+        if (doesUserAlreadyHasEstablishmentName.id !== doesEstablishmentExists.id) {
+          throw new AlreadyExistsException('An Establishment with this name');
+        }
       }
     }
 
-    const doesRequestOwnsEstablishment = await this.establishmentRepository.findById(update.id);
+    const doesRequestOwnsEstablishment = doesEstablishmentExists.ownerId !== ownerId;
 
-    if (!doesRequestOwnsEstablishment) {
-      throw new NotFoundException('Establishment');
-    }
-
-    if (doesRequestOwnsEstablishment?.ownerId !== ownerId) {
+    if (doesRequestOwnsEstablishment) {
       throw new ForbiddenException('Requester does not owns this establishment');
     }
 
