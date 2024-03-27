@@ -1,6 +1,7 @@
 import { Prisma } from '@prisma/client';
+import { randomUUID } from 'node:crypto';
 import prisma from '../lib/prisma';
-import { RegisterEstablishmentEntity, EstablishmentEntity } from '../../domain/entities';
+import { RegisterEstablishmentEntity, EstablishmentEntity, EstablishmentImageEntity } from '../../domain/entities';
 import { EstablishmentRepository } from '../repositories';
 import { UpdateEstablishmentEntity } from '../../domain/entities/establishment/update-establishment-entity';
 
@@ -315,12 +316,8 @@ export class EstablishmentModel implements EstablishmentRepository {
         ...updateEstablishment,
         establishmentAttatchment: {
           update: {
-            commodities: dto.args.commodities as
-            Prisma.CommodityUpdateManyWithoutEstablishmentAttatchmentNestedInput || undefined,
             maxBookingHour: dto.args.maxBookingHour || undefined,
             minBookingHour: dto.args.minBookingHour || undefined,
-            images: dto.args.images as
-            Prisma.EstablishmentImageUpdateManyWithoutEstablishmentInfoNestedInput || undefined,
           },
         },
       },

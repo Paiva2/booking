@@ -41,7 +41,7 @@ export class EstablishmentAttatchmentModel implements EstablishmentAttatchmentRe
   public async findByEstablishmentId(id: string): Promise<EstablishmentAttatchmentEntity | null> {
     const find = await prisma.establishmentAttatchment.findUnique({
       where: {
-        id,
+        establishmentId: id,
       },
       include: {
         establishment: {

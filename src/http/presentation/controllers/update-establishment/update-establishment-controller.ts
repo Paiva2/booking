@@ -15,7 +15,7 @@ export class UpdateEstablishmentController implements Controller {
       authToken: req.headers.authorization,
     });
 
-    const parseUserId = this.jwtHandler.decode(req.headers.authorization.replaceAll('Bearer', ''));
+    const parseUserId = this.jwtHandler.decode(req.headers.authorization.replaceAll('Bearer ', ''));
 
     const updatedEstablishment = await this.updateEstablishmentService.exec({
       ownerId: parseUserId,

@@ -153,13 +153,4 @@ export const updateEstablishmentDTO = z.object({
     required_error: "complement can't be empty.",
     invalid_type_error: 'complement must be an string.',
   }).optional(),
-
-  images: z.array(z.string()).nonempty({ message: "images can't be empty." }).optional(),
-
-  commodities: z.array(
-    z.object({
-      name: z.string(),
-      iconUrl: z.string().optional(),
-    }),
-  ).optional(),
 });
