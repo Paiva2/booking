@@ -156,6 +156,8 @@ export const updateEstablishmentDTO = z.object({
 });
 
 export const updateEstablishmentImagesDTO = z.object({
-  toDelete: z.array(z.string()).nonempty({ message: "images can't be empty." }).optional(),
-  toInsert: z.array(z.string()).nonempty({ message: "images can't be empty." }).optional(),
+  toDelete: z.array(z.string({ invalid_type_error: 'id must be an string' }).uuid({
+    message: 'toDelete item must be an uuid',
+  })).optional(),
+  toInsert: z.array(z.string({ invalid_type_error: 'url must be an string' })).optional(),
 });
