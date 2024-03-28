@@ -10,3 +10,5 @@ export * from './establishment/register-establishment-entity';
 export * from './establishment/establishment-image-entity';
 export * from './commodity/commodity-entity';
 export * from './booked-date/booked-date-entity';
+export * from './commodity/update-commodity-entity';
+export * from './commodity/create-commodity-entity';
