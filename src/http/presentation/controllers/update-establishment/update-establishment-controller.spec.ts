@@ -86,6 +86,9 @@ describe('UpdateEstablishmentController', () => {
       headers: {
         authorization: 'valid_token',
       },
+      params: {
+        establishmentId: 'valid_establishmentId',
+      },
       body: {
         name: 'valid_name',
         street: 'valid_street',
@@ -104,6 +107,9 @@ describe('UpdateEstablishmentController', () => {
     const request: HttpRequest = {
       headers: {
         authorization: '',
+      },
+      params: {
+        establishmentId: 'valid_establishmentId',
       },
       body: {
         name: 'valid_name',
@@ -124,6 +130,9 @@ describe('UpdateEstablishmentController', () => {
     const request: HttpRequest = {
       headers: {
         authorization: 'valid_token',
+      },
+      params: {
+        establishmentId: 'valid_establishmentId',
       },
       body: {
         name: 'valid_name',
@@ -146,6 +155,9 @@ describe('UpdateEstablishmentController', () => {
       headers: {
         authorization: 'valid_token',
       },
+      params: {
+        establishmentId: 'valid_establishmentId',
+      },
       body: {
         name: 'valid_name',
         street: 'valid_street',
@@ -157,7 +169,7 @@ describe('UpdateEstablishmentController', () => {
     expect(spyService).toHaveBeenCalledOnce();
     expect(spyService).toHaveBeenCalledWith({
       ownerId: 'valid_id',
-      update: request.body,
+      update: { ...request.body, id: request.params.establishmentId },
     });
   });
 
@@ -167,6 +179,9 @@ describe('UpdateEstablishmentController', () => {
     const request: HttpRequest = {
       headers: {
         authorization: 'valid_token',
+      },
+      params: {
+        establishmentId: 'valid_establishmentId',
       },
       body: {
         name: 'valid_name',
@@ -193,8 +208,8 @@ describe('UpdateEstablishmentController', () => {
         state: 'any_state',
         country: 'any_country',
         complement: 'any_complement',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
       },
     });
   });
