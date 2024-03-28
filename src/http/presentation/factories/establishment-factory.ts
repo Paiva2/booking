@@ -1,11 +1,14 @@
 import { EstablishmentAttatchmentModel, EstablishmentModel, UserModel } from '../../data/db';
+import { EstablishmentImagesModel } from '../../data/db/establishment-images-model';
 import {
   FilterEstablishmentService,
   ListEstablishmentService,
   RegisterEstablishmentService,
   UpdateEstablishmentService,
 } from '../../domain/services/establishment';
+import { CreateOrDeleteEstablishmentImagesService } from '../../domain/services/establishment-images';
 import { ListOwnEstablishmentsService } from '../../domain/services/establishment/list-own-establishments-service/list-own-establishments-service';
+import { CreateOrDeleteEstablishmentImagesController } from '../controllers/create-or-delete-establishment-images/create-or-delete-establishment-images-controller';
 import { FilterEstablishmentController } from '../controllers/filter-establishment/filter-establishment-controller';
 import { ListEstablishmentController } from '../controllers/list-establishments/list-establishments-controller';
 import { ListOwnEstablishmentsController } from '../controllers/list-own-establishments/list-own-establishments-controller';
@@ -22,6 +25,7 @@ export class EstablishmentFactory {
       filterEstablishmentService,
       listOwnEstablishmentsService,
       updateEstablishmentService,
+      createOrDeleteEstablishmentImageService,
     } = await this.services();
 
     const registerEstablishmentController = new RegisterEstablishmentController(
@@ -45,17 +49,30 @@ export class EstablishmentFactory {
       jwtHandler,
     );
 
+    const CreateOrDeleteImages = CreateOrDeleteEstablishmentImagesController; // name was too large
+
+    const createOrDeleteEstablishmentImagesController = new CreateOrDeleteImages(
+      createOrDeleteEstablishmentImageService,
+      jwtHandler,
+    );
+
     return {
       registerEstablishmentController,
       listEstablishmentController,
       filterEstablishmentController,
       listOwnEstablishmentsController,
       updateEstablishmentController,
+      createOrDeleteEstablishmentImagesController,
     };
   }
 
   private async services() {
-    const { establishmentModel, userModel, establishmentAttatchmentModel } = this.models();
+    const {
+      establishmentModel,
+      userModel,
+      establishmentAttatchmentModel,
+      establishmentImagesModel,
+    } = this.models();
 
     const registerEstablishmentService = new RegisterEstablishmentService(
       userModel,
@@ -76,12 +93,19 @@ export class EstablishmentFactory {
       establishmentAttatchmentModel,
     );
 
+    const createOrDeleteEstablishmentImageService = new CreateOrDeleteEstablishmentImagesService(
+      establishmentAttatchmentModel,
+      establishmentModel,
+      establishmentImagesModel,
+    );
+
     return {
       registerEstablishmentService,
       listEstablishmentService,
       filterEstablishmentService,
       listOwnEstablishmentsService,
       updateEstablishmentService,
+      createOrDeleteEstablishmentImageService,
     };
   }
 
@@ -89,11 +113,13 @@ export class EstablishmentFactory {
     const userModel = new UserModel();
     const establishmentModel = new EstablishmentModel();
     const establishmentAttatchmentModel = new EstablishmentAttatchmentModel();
+    const establishmentImagesModel = new EstablishmentImagesModel();
 
     return {
       userModel,
       establishmentModel,
       establishmentAttatchmentModel,
+      establishmentImagesModel,
     };
   }
 

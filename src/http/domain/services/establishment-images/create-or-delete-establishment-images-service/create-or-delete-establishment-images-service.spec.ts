@@ -306,6 +306,7 @@ describe('CreateOrDeleteEstablishmentImagesService', () => {
     expect(spyRepository).toHaveBeenCalledWith({
       toDelete: serviceArgs.toDelete,
       toInsert: serviceArgs.toInsert,
+      establishmentAttatchmentId: 'any_id',
     });
   });
 
@@ -403,7 +404,6 @@ describe('CreateOrDeleteEstablishmentImagesService', () => {
       establishmentId: 'valid_establishmentId',
       toDelete: ['valid_url'],
       toInsert: [],
-
     };
 
     const serviceReponse = await sut.exec(serviceArgs);

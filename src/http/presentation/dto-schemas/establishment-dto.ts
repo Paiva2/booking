@@ -154,3 +154,8 @@ export const updateEstablishmentDTO = z.object({
     invalid_type_error: 'complement must be an string.',
   }).optional(),
 });
+
+export const updateEstablishmentImagesDTO = z.object({
+  toDelete: z.array(z.string()).nonempty({ message: "images can't be empty." }).optional(),
+  toInsert: z.array(z.string()).nonempty({ message: "images can't be empty." }).optional(),
+});

@@ -20,7 +20,7 @@ export class CreateOrDeleteEstablishmentImagesService implements Service {
       inserted: EstablishmentImageEntity[] | null
       deleted: EstablishmentImageEntity[] | null
     }> {
-    if (!dto.toDelete.length && !dto.toInsert.length) {
+    if (!dto.toDelete?.length && !dto.toInsert?.length) {
       throw new MissingParamException('toDelete or toInsert');
     }
 
@@ -46,6 +46,7 @@ export class CreateOrDeleteEstablishmentImagesService implements Service {
     const imagesHandled = await this.establishmentImagesRepository.createOrDelete({
       toDelete: dto.toDelete,
       toInsert: dto.toInsert,
+      establishmentAttatchmentId: doesAttatchmentExists.id,
     });
 
     return imagesHandled;

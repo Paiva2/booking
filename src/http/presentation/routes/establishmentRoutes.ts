@@ -1,6 +1,6 @@
 import { Request, Response, Express } from 'express';
 import { EstablishmentFactory } from '../factories/establishment-factory';
-import { registerEstablishmentDTO, updateEstablishmentDTO } from '../dto-schemas';
+import { registerEstablishmentDTO, updateEstablishmentDTO, updateEstablishmentImagesDTO } from '../dto-schemas';
 import { zodDto } from '../middlewares';
 import tokenVerify from '../middlewares/token-verify';
 
@@ -62,6 +62,18 @@ export default function establishmentRoutes(app: Express) {
       const { updateEstablishmentController } = await establishmentFactory.handle();
 
       const controllerResponse = await updateEstablishmentController.handle(req);
+
+      return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
+    },
+  );
+
+  app.put(
+    `${prefix}/update/images/:establishmentId`,
+    [tokenVerify, zodDto(updateEstablishmentImagesDTO)],
+    async (req: Request, res: Response) => {
+      const { createOrDeleteEstablishmentImagesController } = await establishmentFactory.handle();
+
+      const controllerResponse = await createOrDeleteEstablishmentImagesController.handle(req);
 
       return res.status(controllerResponse.status).send({ reply: controllerResponse.data });
     },
