@@ -1,7 +1,6 @@
 import {
   beforeEach, describe, expect, test, vi,
 } from 'vitest';
-import { CreateOrDeleteEstablishmentImagesService } from './create-or-delete-establishment-images-service';
 import { EstablishmentAttatchmentRepository, EstablishmentRepository } from '../../../../data/repositories';
 import {
   EstablishmentAttatchmentEntity,
@@ -13,6 +12,7 @@ import { UpdateEstablishmentEntity } from '../../../entities/establishment/updat
 import { EstablishmentImagesRepository } from '../../../../data/repositories/establishment-images-repository';
 import { EstablishmentTypes } from '../../../entities/enums';
 import { ForbiddenException, MissingParamException, NotFoundException } from '../../../../presentation/exceptions';
+import { CreateOrDeleteEstablishmentImagesService } from '..';
 
 const makeEstablishmentImagesRepositoryStub = () => {
   class EstablishmentImagesRepositoryStub implements EstablishmentImagesRepository {
